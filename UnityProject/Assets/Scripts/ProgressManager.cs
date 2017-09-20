@@ -32,7 +32,7 @@ public class ProgressManager : MonoBehaviour {
 		
 		if (progress>0.70) {
 		
-		light.light.intensity = Mathf.Lerp (0.1f, 0.66f, Mathf.InverseLerp (1.0f, 0.70f, progress));
+		light.GetComponent<Light>().intensity = Mathf.Lerp (0.1f, 0.66f, Mathf.InverseLerp (1.0f, 0.70f, progress));
 		
 		}
 		if (progress < nextProgress)

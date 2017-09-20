@@ -42,10 +42,10 @@ public class TutorialGui : MonoBehaviour {
 	private Tutorials currTut = Tutorials.move;
 	void Awake()
 	{		
-		textOverlay = transform.FindChild("TextOverlay").gameObject.transform.FindChild("Text").guiText;
-		darkOverlay = transform.FindChild("TextOverlay").gameObject.transform.FindChild("DarkOverlay").guiTexture;
-		credits = transform.FindChild("Credits").gameObject;
-		walkaway = transform.FindChild("walkaway").gameObject;
+		textOverlay = transform.Find("TextOverlay").gameObject.transform.Find("Text").GetComponent<GUIText>();
+		darkOverlay = transform.Find("TextOverlay").gameObject.transform.Find("DarkOverlay").GetComponent<GUITexture>();
+		credits = transform.Find("Credits").gameObject;
+		walkaway = transform.Find("walkaway").gameObject;
 		Restart();
 	}
 	private void resetTextOverlay( string inStr )
@@ -179,7 +179,7 @@ public class TutorialGui : MonoBehaviour {
 	public void doneStandingUp(){ tutStandUpDone = true; if(currTut==Tutorials.standup) { fade = true;nextTut=Tutorials.endTutorial;}}
 	public void doneTutorial(){ tutDone = true; if(currTut==Tutorials.endTutorial) { fade = true;nextTut=Tutorials.none;}}
 	public void doneFollow()	{ tutFollowDone = true;
-									GameObject.Find("GUI").transform.FindChild("Arrow").gameObject.SetActive(false); 
+									GameObject.Find("GUI").transform.Find("Arrow").gameObject.SetActive(false); 
 								  if(currTut==Tutorials.follow){ fade = true;nextTut=Tutorials.sit;}}
 
 
@@ -241,15 +241,15 @@ public class TutorialGui : MonoBehaviour {
 	private void fadeOutWalkaway()
 	{
 		walkaway.SetActive(true);
-		walkaway.guiTexture.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-		StartCoroutine(Fade.use.Alpha(walkaway.guiTexture, 1.0f, 0.0f, 3.0f));		
+		walkaway.GetComponent<GUITexture>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+		StartCoroutine(Fade.use.Alpha(walkaway.GetComponent<GUITexture>(), 1.0f, 0.0f, 3.0f));		
 		currTut = Tutorials.none;
 	}
 	private void fadeInWalkaway()
 	{		
 		walkaway.SetActive(true);
-		walkaway.guiTexture.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-		StartCoroutine(Fade.use.Alpha(walkaway.guiTexture, 0.0f, 1.0f, 3.0f));		
+		walkaway.GetComponent<GUITexture>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+		StartCoroutine(Fade.use.Alpha(walkaway.GetComponent<GUITexture>(), 0.0f, 1.0f, 3.0f));		
 	}
 	public void temporarilyShowCredits()
 	{
@@ -265,8 +265,8 @@ public class TutorialGui : MonoBehaviour {
 	{		
 		shouldShowCredits = true;
 		credits.SetActive(true);
-		credits.guiTexture.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-		StartCoroutine(DelayFadeIn(credits.guiTexture,1.0f));
+		credits.GetComponent<GUITexture>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+		StartCoroutine(DelayFadeIn(credits.GetComponent<GUITexture>(),1.0f));
 	}
 	
 	IEnumerator DelayFadeIn(GUITexture fadein, float delay)

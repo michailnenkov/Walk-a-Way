@@ -36,7 +36,7 @@ namespace Assets.Scripts.InteractableBehaviour
             playerPos.Normalize();
             //playerPos.y += HeightLevel;
             transform.position += (new Vector3(0,0.1f,0));
-            transform.rigidbody.AddForce(-playerPos*ForceMultiplier);
+            transform.GetComponent<Rigidbody>().AddForce(-playerPos*ForceMultiplier);
         }
 
         public override string customInteractiveText()

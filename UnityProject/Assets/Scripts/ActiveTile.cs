@@ -15,7 +15,7 @@ public class ActiveTile : MonoBehaviour {
 
 	public void showNextTile(Direction inDirection)
 	{
-		var myMaterial = renderer.material;
+		var myMaterial = GetComponent<Renderer>().material;
 		myMaterial.SetColor("_Color",new Color(Random.value,Random.value,Random.value,1.0f));
 	}
 }

@@ -14,17 +14,17 @@ public class MenuController : MonoBehaviour {
 	private int selected = 0;
 	// Use this for initialization
 	void Start () {
-		Screen.showCursor = false;
+		Cursor.visible = false;
 		tutorial = (TutorialGui)GameObject.Find("GUI").GetComponent("TutorialGui");
 		
-		elements = this.transform.FindChild("MenuElements").gameObject;
-		darkBgr = elements.transform.FindChild("DarkBgr").guiTexture;
+		elements = this.transform.Find("MenuElements").gameObject;
+		darkBgr = elements.transform.Find("DarkBgr").GetComponent<GUITexture>();
 		selectables = new List<GUIText>();
-		selectables.Add(elements.transform.FindChild("Continue").guiText);
-		selectables.Add(elements.transform.FindChild("Controls").guiText);
-		selectables.Add(elements.transform.FindChild("Restart Tutorial").guiText);
-		selectables.Add(elements.transform.FindChild("Quit").guiText);
-		controlText = elements.transform.FindChild("ControlsShortExplain").guiText;
+		selectables.Add(elements.transform.Find("Continue").GetComponent<GUIText>());
+		selectables.Add(elements.transform.Find("Controls").GetComponent<GUIText>());
+		selectables.Add(elements.transform.Find("Restart Tutorial").GetComponent<GUIText>());
+		selectables.Add(elements.transform.Find("Quit").GetComponent<GUIText>());
+		controlText = elements.transform.Find("ControlsShortExplain").GetComponent<GUIText>();
 	}
 	
 	// Update is called once per frame

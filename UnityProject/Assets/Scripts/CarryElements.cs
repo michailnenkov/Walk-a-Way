@@ -63,8 +63,8 @@ public class CarryElements : MonoBehaviour {
 
     private void ChangeTransparancy(float fadeRemain, Transform carryObject)
     {
-        Color extColor = carryObject.renderer.material.color;
-        carryObject.renderer.material.color = new Color(extColor.r, extColor.g, extColor.b, (fadeRemain / 5));
+        Color extColor = carryObject.GetComponent<Renderer>().material.color;
+        carryObject.GetComponent<Renderer>().material.color = new Color(extColor.r, extColor.g, extColor.b, (fadeRemain / 5));
     }
 
     private float GetNewFadeCarryDuration(float progress)

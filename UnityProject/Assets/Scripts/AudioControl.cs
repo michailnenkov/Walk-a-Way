@@ -14,14 +14,14 @@ public class AudioControl : MonoBehaviour {
 		if( toggleMusic )
 		{
 			AudioSource test = GetComponent<AudioSource>();
-			if (test.audio.isPlaying) 
+			if (test.GetComponent<AudioSource>().isPlaying) 
 			{
-				test.audio.Stop();
+				test.GetComponent<AudioSource>().Stop();
 				Debug.Log("Stop Music");
 			}
 			else
 			{
-				test.audio.Play();
+				test.GetComponent<AudioSource>().Play();
 				Debug.Log("Play Music");
 			}
 		}

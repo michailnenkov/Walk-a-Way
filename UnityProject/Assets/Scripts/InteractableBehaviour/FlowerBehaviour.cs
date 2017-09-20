@@ -17,7 +17,7 @@ namespace Assets.Scripts.InteractableBehaviour
         void Awake()
         {
             head = GetGhildComponent("Head");
-            head.renderer.material.color = colors[0];
+            head.GetComponent<Renderer>().material.color = colors[0];
             //head.renderer.material.shader = Shader.Find("Transparent/Diffuse");
             //SphereCollider trigger = GetComponent<SphereCollider>();
             //trigger.radius = triggerRadius;
@@ -59,8 +59,8 @@ namespace Assets.Scripts.InteractableBehaviour
 
         void changeTransparancy(float fadeRemain)
         {
-            Color extColor = head.renderer.material.color;
-            head.renderer.material.color = new Color(extColor.r, extColor.g, extColor.b,(1 - (fadeRemain/5)));
+            Color extColor = head.GetComponent<Renderer>().material.color;
+            head.GetComponent<Renderer>().material.color = new Color(extColor.r, extColor.g, extColor.b,(1 - (fadeRemain/5)));
         }
 
 

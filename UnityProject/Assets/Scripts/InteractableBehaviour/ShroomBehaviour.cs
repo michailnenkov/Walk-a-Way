@@ -58,8 +58,8 @@ namespace Assets.Scripts.InteractableBehaviour
 
         void changeTransparancy(float fadeRemain)
         {
-            Color extColor = head.renderer.material.color;
-            head.renderer.material.color = new Color(extColor.r, extColor.g, extColor.b,(1 - (fadeRemain/5)));
+            Color extColor = head.GetComponent<Renderer>().material.color;
+            head.GetComponent<Renderer>().material.color = new Color(extColor.r, extColor.g, extColor.b,(1 - (fadeRemain/5)));
         }
 
 

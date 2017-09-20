@@ -78,24 +78,24 @@ public class PlayerController : MonoBehaviour {
 	{
 		//groundGen = this.GetComponent<GroundGen>;
 		inRangeElements = new List<ActableBehaviour>();
-		animator = transform.FindChild("animations").GetComponent<Animator>();
+		animator = transform.Find("animations").GetComponent<Animator>();
 		groundTile = GameObject.Find("GroundTile");
 		progressMng = (ProgressManager)GameObject.Find("Progression").GetComponent("ProgressManager");
-		interactionTooltip = GameObject.Find("ContextSensitiveInteractionText").guiText;
+		interactionTooltip = GameObject.Find("ContextSensitiveInteractionText").GetComponent<GUIText>();
 		interactionTooltip.text = "";
 	    //Carry = gameObject.GetComponentInChildren<CarryElements>();
 
 		
 		// find sounds
-		sittingSound = GameObject.Find("AudioSit").audio;
-		dyingSound = GameObject.Find("AudioDeath").audio;
+		sittingSound = GameObject.Find("AudioSit").GetComponent<AudioSource>();
+		dyingSound = GameObject.Find("AudioDeath").GetComponent<AudioSource>();
 		// find camera
-		isoCam = GameObject.Find("IsoCamera").camera;
+		isoCam = GameObject.Find("IsoCamera").GetComponent<Camera>();
 		background = isoCam.backgroundColor;
 		// set to no collisions with pebbles (via Layers)		
 		SetLayerRecursively(gameObject,(int)(LayerList.ignorePebbleCollision)); // ignorePebbleCollision
 		// colliding stuffs
-        collisionHelper = transform.FindChild("ObstacleCollider").gameObject.GetComponent<SphereCollider>();
+        collisionHelper = transform.Find("ObstacleCollider").gameObject.GetComponent<SphereCollider>();
 		collidingObj = new List<SphereCollider>();
 	}
 
@@ -192,7 +192,7 @@ public class PlayerController : MonoBehaviour {
             currSittingTime = 0.0f;
             animator.SetBool("sitting", true);
             //change the carrying position when sitting down
-            transform.FindChild("CarryingPosition").gameObject.transform.Translate(0.0f, -0.15f, 0.0f);
+            transform.Find("CarryingPosition").gameObject.transform.Translate(0.0f, -0.15f, 0.0f);
             isSitting = true;
             PlaySittingSound();
             elapsedTime = duration;
@@ -204,7 +204,7 @@ public class PlayerController : MonoBehaviour {
 
             animator.SetBool("sitting", false);
             //change the carrying position when standing up again
-            transform.FindChild("CarryingPosition").gameObject.transform.Translate(0.0f, +0.15f, 0.0f);
+            transform.Find("CarryingPosition").gameObject.transform.Translate(0.0f, +0.15f, 0.0f);
             StopSittingSound(currSittingTime);
             isSitting = false;
             //progressMng.usedMechanic(ProgressManager.Mechanic.Sitting, currSittingTime);
@@ -544,7 +544,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		if( other.gameObject.tag == "Interactable")
 		{
-			Transform colli = other.transform.FindChild("CollisionCollider");
+			Transform colli = other.transform.Find("CollisionCollider");
 			if( colli != null)
 			{
 				SphereCollider enemy = colli.GetComponent<SphereCollider>();
@@ -696,13 +696,13 @@ public class PlayerController : MonoBehaviour {
 	}
 	private void FadeSounds(float timeDelta)
 	{
-		if(sittingSound.audio.isPlaying)
+		if(sittingSound.GetComponent<AudioSource>().isPlaying)
 		{
 			if (!fadeOut) // fade In
 			{
 				if ( fadingSittingVolume < 1.0f)
 					fadingSittingVolume += timeDelta*0.2f;
-				sittingSound.audio.volume = fadingSittingVolume;			
+				sittingSound.GetComponent<AudioSource>().volume = fadingSittingVolume;			
 			}
 			else // fade Out
 			{
@@ -710,17 +710,17 @@ public class PlayerController : MonoBehaviour {
 					fadingSittingVolume -= timeDelta*fadeOutFactor;
 				else 
 				{
-					sittingSound.audio.Stop();
+					sittingSound.GetComponent<AudioSource>().Stop();
 					fadeOut = false;
 				}
-				sittingSound.audio.volume = fadingSittingVolume;							
+				sittingSound.GetComponent<AudioSource>().volume = fadingSittingVolume;							
 			}
 		}
 	}
 	private void PlaySittingSound()
 	{
-		sittingSound.audio.time = sittingSound.audio.clip.length*Random.value; // starts at random pos in the track
-		sittingSound.audio.Play();
+		sittingSound.GetComponent<AudioSource>().time = sittingSound.GetComponent<AudioSource>().clip.length*Random.value; // starts at random pos in the track
+		sittingSound.GetComponent<AudioSource>().Play();
 		fadingSittingVolume = 0.0f;
 	}
 	private void StopSittingSound(float inTimeSpentSitting)
@@ -730,7 +730,7 @@ public class PlayerController : MonoBehaviour {
 		else
 			fadeOutFactor = Mathf.Lerp(0.5f, 0.03f, Mathf.Min (1.0f, (inTimeSpentSitting-THRESH_FOR_SITTING_SOUND_FADEOUT)/20.0f));
 		fadingSittingVolume = 1.0f;
-		sittingSound.audio.volume = fadingSittingVolume;
+		sittingSound.GetComponent<AudioSource>().volume = fadingSittingVolume;
 		fadeOut = true;
 	}
 	private void PlayDeathSound()

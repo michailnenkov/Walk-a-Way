@@ -31,7 +31,7 @@ function Generate() {
 	var heightD = 2;
 	var width = 20;
 
-	renderer.material = mat;
+	GetComponent.<Renderer>().material = mat;
 	
 	var ground = groundObject.GetComponent(MeshFilter).mesh;
 	

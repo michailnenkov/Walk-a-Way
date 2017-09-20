@@ -206,7 +206,7 @@ function GenerateGround() {																	//-----GenerateGround-----//
 	gameObject.AddComponent(MeshFilter);
 	gameObject.AddComponent(MeshRenderer);
 	
-	renderer.material = groundMat;
+	GetComponent.<Renderer>().material = groundMat;
 	
 	ground = GetComponent(MeshFilter).mesh;
 	
@@ -316,12 +316,15 @@ function ChangeTerrain() {																	//-----ChangeTerrain-----//
 	
 	var index = 0;
 	
+	// vertices.length and index both cap at 400 so that's thy this works
 	for(var i=0;i<width;i++) {
 		for(var j=0;j<height;j++) {	
 			vertices[index].y = returnGroundY(j,i);		
 			index++;
 		}
 	}
+
+	
 	
 	ground.vertices = vertices;
 	ground.RecalculateNormals();
