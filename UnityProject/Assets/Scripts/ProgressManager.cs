@@ -6,7 +6,6 @@ public class ProgressManager : MonoBehaviour {
 	public enum Mechanic {Sitting, Travel, Interaction}
 	public enum Values {Alpha, Speed, InertiaDuration, InertiaDistance, GreyPlayerColor, BackgroundColorFactor, CollisionSizePercent}
 	
-	//michail
 	public GameObject sun;
 	public GameObject light;
 	
@@ -29,14 +28,15 @@ public class ProgressManager : MonoBehaviour {
 	void Update () {
 	
 		sun.transform.eulerAngles = new Vector3(0, 0, -progress*170);
-		
-		if (progress>0.70) {
-		
-		light.GetComponent<Light>().intensity = Mathf.Lerp (0.1f, 0.66f, Mathf.InverseLerp (1.0f, 0.70f, progress));
-		
-		}
-		if (progress < nextProgress)
+
+		// if over 70 percent done, start dimming the light		
+		// if (progress>0.70) {
+		// 	light.GetComponent<Light>().intensity = Mathf.Lerp (0.1f, 0.66f, Mathf.InverseLerp (1.0f, 0.70f, progress));		
+		// }
+
+		if (progress < nextProgress) {
 			progress += Mathf.Max ( (nextProgress-progress)*0.01f, 0.000025f);
+		}
 	}
 	public void computeProgress()
 	{

@@ -289,7 +289,7 @@ public class PlayerController : MonoBehaviour {
 
     private void checkProgress()
     {
-		if( isSitting)
+		if(isSitting)
 			progressMng.usedMechanic(ProgressManager.Mechanic.Sitting, Time.deltaTime);
 		// compute new progress value:
 		progressMng.computeProgress();
@@ -308,14 +308,14 @@ public class PlayerController : MonoBehaviour {
 		}
 		
 		//start fading the background to black				
-		float lower = progressMng.getValue(ProgressManager.Values.BackgroundColorFactor);
-		isoCam.backgroundColor = new Color ( background.r*lower , background.g*lower, background.b*lower, 1.0f);
+		// float lower = progressMng.getValue(ProgressManager.Values.BackgroundColorFactor);
+		// isoCam.backgroundColor = new Color ( background.r*lower , background.g*lower, background.b*lower, 1.0f);
 	
 		// he dies at progress 1.0f
-		if (progress > 1.0f && !dead)
-		{
-			Die();
-		}
+		// if (progress > 1.0f && !dead)
+		// {
+		// 	Die();
+		// }
     }
 
     private void Movement(float v, float h)
