@@ -245,19 +245,19 @@ public class PlayerController : MonoBehaviour {
 	{
 		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 		AnimatorStateInfo nextStateInfo = animator.GetNextAnimatorStateInfo(0);
-		if(stateInfo.nameHash == Animator.StringToHash("Base.Picking"))
+		if(stateInfo.fullPathHash == Animator.StringToHash("Base.Picking"))
 		{
 			animator.SetBool("picking", false );
 		}
-		else if(stateInfo.nameHash == Animator.StringToHash("Base.Kicking"))
+		else if(stateInfo.fullPathHash == Animator.StringToHash("Base.Kicking"))
 		{
 			animator.SetBool("kicking", false );
 		}
-		else if(stateInfo.nameHash == Animator.StringToHash("Base.Dying"))
+		else if(stateInfo.fullPathHash == Animator.StringToHash("Base.Dying"))
 		{
 			animator.SetBool("dead", false);
 		}
-        else if (stateInfo.nameHash == Animator.StringToHash("Base.Eating"))
+        else if (stateInfo.fullPathHash == Animator.StringToHash("Base.Eating"))
         {
             animator.SetBool("eating", false);
         }
