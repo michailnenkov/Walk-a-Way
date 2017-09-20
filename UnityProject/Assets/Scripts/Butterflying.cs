@@ -26,21 +26,23 @@ public class Butterflying : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
-		if(  Vector3.Distance(butterfly.transform.position, nextPos) < 0.05f)
-		{
-			//compute next point on the sphere to fly to
-			s = Random.value*360.0f;
-			t = Random.value*360.0f;
-			nextPos = new Vector3 ( r * Mathf.Cos(s) *Mathf.Sin(t),r * Mathf.Sin(s) * Mathf.Sin(t),r * Mathf.Cos(t));
-			nextPos += boundaries.transform.position;
-		}
-		Vector3 dir = nextPos - butterfly.transform.position;//comput the direction towards the nextPos;
-		dir.Normalize();
-		butterfly.transform.position += dir*speed;//move towards the nextPos;
+		if (butterfly) {
+			if(  Vector3.Distance(butterfly.transform.position, nextPos) < 0.05f)
+			{
+				//compute next point on the sphere to fly to
+				s = Random.value*360.0f;
+				t = Random.value*360.0f;
+				nextPos = new Vector3 ( r * Mathf.Cos(s) *Mathf.Sin(t),r * Mathf.Sin(s) * Mathf.Sin(t),r * Mathf.Cos(t));
+				nextPos += boundaries.transform.position;
+			}
+			Vector3 dir = nextPos - butterfly.transform.position;//comput the direction towards the nextPos;
+			dir.Normalize();
+			butterfly.transform.position += dir*speed;//move towards the nextPos;
 
-		//rotate the butterfly, not perfect but ok
-		Vector3 offset = new Vector3(270.0f,0.0f, 0.0f);
-		Quaternion rotation = Quaternion.LookRotation(dir,offset);
-		butterfly.transform.rotation=rotation;
+			//rotate the butterfly, not perfect but ok
+			Vector3 offset = new Vector3(270.0f,0.0f, 0.0f);
+			Quaternion rotation = Quaternion.LookRotation(dir,offset);
+			butterfly.transform.rotation=rotation;
+		}
 	}
 }

@@ -607,7 +607,8 @@ function ScatterRenderer(toRender) {														//----ScatterRenderer----//
 				
 				renderedInstances[i] = Instantiate(pebble, temPos, Quaternion.identity); 		//instantiation
 				
-				renderedInstances[i].rigidbody.Sleep();	
+				//renderedInstances[i].rigidbody.Sleep();	
+				renderedInstances[i].GetComponent("Rigidbody").Sleep();
 															
 				
 				renderedInstances[i].transform.eulerAngles.y = Random.Range(0, 360);			//random rotation
