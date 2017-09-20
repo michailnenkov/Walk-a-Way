@@ -8,7 +8,10 @@ public class ProgressManager : MonoBehaviour {
 	
 	public GameObject sun;
 	public GameObject light;
-	
+
+	public float timer = 0;
+	public float timerRate;
+	float sunRot = 0;
 	private float progress= 0.0f;
 	private float nextProgress = 0.0f;
 	private float totalSittingTime = 0.0f; //100.0f for testing
@@ -22,19 +25,32 @@ public class ProgressManager : MonoBehaviour {
 	
 		sun = GameObject.Find("Sun");
 		light = GameObject.Find("DirectionalLight");
+
+		 InvokeRepeating("AddValue", 1, 0.01f); // function string, start after float, repeat rate float
+ 
+	}
+	void AddValue() {
+		timer += timerRate;
+		if (timer > 1.0f) {
+			timer = 0;
+		};
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
-		sun.transform.eulerAngles = new Vector3(0, 0, -progress*170);
 
-		// if over 70 percent done, start dimming the light		
-		// if (progress>0.70) {
-		// 	light.GetComponent<Light>().intensity = Mathf.Lerp (0.1f, 0.66f, Mathf.InverseLerp (1.0f, 0.70f, progress));		
-		// }
+		sunRot = Mathf.Lerp(220.0f, 365.0f, timer);		
+		sun.transform.eulerAngles = new Vector3(0,0,sunRot);
 
-		Debug.Log("Progress: " + progress + ". NextProgress: " + nextProgress);
+		if (timer > 0.75) {
+			light.GetComponent<Light>().intensity = Mathf.Lerp (0.0f, 2.0f, Mathf.InverseLerp (1.0f, 0.75f, timer));
+		}
+
+		if (timer < 0.25) {
+			light.GetComponent<Light>().intensity = Mathf.Lerp (0.0f, 2.0f, Mathf.InverseLerp (0.0f, 0.25f, timer));
+		}		
+
+		// Debug.Log("Progress: " + progress + ". NextProgress: " + nextProgress);
 		if (progress < nextProgress) {
 			progress += Mathf.Max ( (nextProgress-progress)*0.01f, 0.000025f);
 		}

@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour {
 	public float speed;
 	//public ActiveTile actTile;
 	public Material playerMat;
-	//public GroundGen groundGen;
+	// public GroundGen groundGen;
 	
 	// gui elements
 	public TutorialGui gui;
