@@ -13,6 +13,7 @@ public class RabbitGroupBehavior : ReactableBehaviour
 
 	bool movingCloser = false;
 	bool waiting = false;
+	bool backingUp = false;
 
 	private Vector3 playerPos;
 
@@ -44,7 +45,7 @@ public class RabbitGroupBehavior : ReactableBehaviour
 
 		float distanceToPlayer = Vector3.Distance(GameObject.FindGameObjectWithTag("Player").transform.position, transform.position);
 
-		if (distanceToPlayer < 10) {
+		if (distanceToPlayer < 6) {
 			PlayerInRange = true;
 		} else {
 			PlayerInRange = false;
@@ -89,7 +90,7 @@ public class RabbitGroupBehavior : ReactableBehaviour
                     // Debug.Log("curious in range");
                     // Debug.Log(distanceToPlayer);
 
-                    if (distanceToPlayer > 4 && !waiting)
+                    if (distanceToPlayer > 3 && !waiting && !backingUp)
                     {
 						Debug.Log("moving closer");
 						FacePlayer();
@@ -107,13 +108,17 @@ public class RabbitGroupBehavior : ReactableBehaviour
                         }
                     }
 
-                    if (distanceToPlayer < 2)
+                    if (distanceToPlayer < 1.5f && !backingUp)
                     {
 						Debug.Log("too close!");
-						//keep distance
+						
+						StartCoroutine("BackUp");
+                    }
+
+					if (backingUp) {
 						FaceAway();
 						CurrentSpeed = Speed;
-                    }
+					}
 
 
 
@@ -148,7 +153,10 @@ public class RabbitGroupBehavior : ReactableBehaviour
 					break;
                 case AnimalBehaviour.Curious:
 					Debug.Log("Curious out of range");
+
+
 					//GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Bliss());
+					gameObject.GetComponent<RabbitMovement>().Bliss();
 
 					// GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(PlayerPos + transform.position)); // Look at player
 
@@ -207,4 +215,11 @@ public class RabbitGroupBehavior : ReactableBehaviour
 		waiting = false;
 		yield return null;
 	}
+
+    IEnumerator BackUp() {
+		backingUp = true;
+		yield return new WaitForSeconds(1);
+		backingUp = false;
+		yield return null;
+	}	
 }
