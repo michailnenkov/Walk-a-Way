@@ -31,22 +31,42 @@ public class RabbitGroupBehavior : ReactableBehaviour
 		//cos -> x
 		//sin -> z
 
+		float distanceToPlayer = Vector3.Distance(GameObject.FindGameObjectWithTag("Player").transform.position, transform.position);
+
 		if (PlayerInRange)
 		{
 			switch (Behaviour)
 			{
 				case AnimalBehaviour.Ignore:
+					// Debug.Log("Ignore in range");
 					break;
 				case AnimalBehaviour.Observe:
+					// Debug.Log("observe in range");
+					break;
                 case AnimalBehaviour.Curious:
-					GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(PlayerPos + transform.position));
+					// Debug.Log("curious in range");
+					Debug.Log(distanceToPlayer);
+					//GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(PlayerPos + transform.position)); // Look at player
+					GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(PlayerPos + transform.position)); // Look at player
+
+					if (distanceToPlayer > 2) {
+						CurrentSpeed = Speed * -1;
+					} else {
+						// if (CurrentSpeed > 0) { CurrentSpeed += Decel; }
+						CurrentSpeed = 0;
+					}
 					break;
 				case AnimalBehaviour.Move:
+					// Debug.Log("Move in range");
+
+					break;
 				case AnimalBehaviour.Flee:
-                    GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(PlayerPos * -1 + transform.position));
-					CurrentSpeed = Speed;
+					// Debug.Log("Flee in range");
+                    //GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(PlayerPos * -1 + transform.position)); // Look away from player and run
+					//CurrentSpeed = Speed;
 					break;
 				default:
+					// Debug.Log("Default? in range");
 					break;
 			}
 		}
@@ -55,15 +75,30 @@ public class RabbitGroupBehavior : ReactableBehaviour
 			switch (Behaviour)
 			{
 				case AnimalBehaviour.Ignore:
+					// Debug.Log("Ignore out of range");
 					break;
 				case AnimalBehaviour.Observe:
+					// Debug.Log("Observe out of range");
+					break;
                 case AnimalBehaviour.Curious:
-					GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Bliss());
+					Debug.Log("Curious out of range");
+					// GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Bliss());
+
+					// GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(PlayerPos + transform.position)); // Look at player
+
+					// if (distanceToPlayer > 5) {
+					// 	CurrentSpeed = Speed * -1;
+					// } else {
+					// 	if (CurrentSpeed > 0) { CurrentSpeed += Decel; }
+					// }					
+
 					break;
 				case AnimalBehaviour.Move:
+					// Debug.Log("Move out of range");
 					if (CurrentSpeed > 0) { CurrentSpeed += Decel; }
 					break;
 				case AnimalBehaviour.Flee:
+					// Debug.Log("Flee out of range");
 					break;
 			}
 		}
