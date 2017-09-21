@@ -42,10 +42,12 @@ public class ProgressManager : MonoBehaviour {
 		sunRot = Mathf.Lerp(220.0f, 365.0f, timer);		
 		sun.transform.eulerAngles = new Vector3(0,0,sunRot);
 
+		//start dimming the light after 0.75 on the timer
 		if (timer > 0.75) {
 			light.GetComponent<Light>().intensity = Mathf.Lerp (0.0f, 2.0f, Mathf.InverseLerp (1.0f, 0.75f, timer));
 		}
 
+		//start increasing intensity of the light after between 0 and 0.25 on the timer
 		if (timer < 0.25) {
 			light.GetComponent<Light>().intensity = Mathf.Lerp (0.0f, 2.0f, Mathf.InverseLerp (0.0f, 0.25f, timer));
 		}		
@@ -57,7 +59,7 @@ public class ProgressManager : MonoBehaviour {
 	}
 	public void computeProgress()
 	{
-		//Debug.Log ( "progress: "+progress+" totalSittingTime:"+totalSittingTime+" nearInteractionCounter:"+nearInteractionCounter+" totalTilesTraveled:" + totalTilesTraveled+" offset:"+prog_offset);
+		Debug.Log ( "progress: "+progress+" totalSittingTime:"+totalSittingTime+" nearInteractionCounter:"+nearInteractionCounter+" totalTilesTraveled:" + totalTilesTraveled+" offset:"+prog_offset);
 		nextProgress = ((Mathf.Sqrt( totalSittingTime * (float)(nearInteractionCounter)))/100.0f)+prog_offset;
 		nextProgress += Mathf.Log10( totalTilesTraveled + 1)*0.05f;
 		nextProgress = Mathf.Max(0.0f, Mathf.Min(1.00001f, nextProgress));		
