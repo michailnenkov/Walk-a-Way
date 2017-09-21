@@ -12,13 +12,13 @@ public class ProgressManager : MonoBehaviour {
 	public float timer = 0;
 	public float timerRate;
 	float sunRot = 0;
-	private float progress= 0.0f;
+	public float progress= 0.0f;
 	private float nextProgress = 0.0f;
 	private float totalSittingTime = 0.0f; //100.0f for testing
 	private uint nearInteractionCounter = 0; // 45 for testing
 	private uint totalTilesTraveled = 0; // 45 for testing
 	// Debug
-	public float prog_offset = 0.0f;
+	float prog_offset = 0.0f;
 	
 	// Use this for initialization
 	void Start () {
