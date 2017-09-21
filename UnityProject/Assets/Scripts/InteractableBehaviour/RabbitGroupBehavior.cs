@@ -211,7 +211,7 @@ public class RabbitGroupBehavior : ReactableBehaviour
 
     IEnumerator WaitInPlace() {
 		waiting = true;
-		yield return new WaitForSeconds(Random.Range(1.0f, 6.0f));
+		yield return new WaitForSeconds(Random.Range(2.0f, 6.0f));
 		waiting = false;
 		yield return null;
 	}
