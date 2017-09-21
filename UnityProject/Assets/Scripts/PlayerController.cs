@@ -137,7 +137,6 @@ public class PlayerController : MonoBehaviour {
 		FadeSounds(Time.deltaTime);		
 		DisplayInteractionTooltip();		
 
-	    React();
 		animationHandling();
 	    Carry.UpdateCarry(progress);
 		lastH = h;
@@ -262,15 +261,6 @@ public class PlayerController : MonoBehaviour {
             animator.SetBool("eating", false);
         }
 	}
-	
-    private void React()
-    {
-        inRangeElements.OfType<ReactableBehaviour>().ToList().ForEach(e => e.React(progress, ToPlayerPos(e)));
-        //foreach (ReactableBehaviour reactable in inRangeElements.OfType<ReactableBehaviour>())
-        //{
-        //    reactable.React(progress, ToPlayerPos(reactable));
-        //}
-    }
 
     private Vector3 ToPlayerPos(ActableBehaviour actable)
     {
