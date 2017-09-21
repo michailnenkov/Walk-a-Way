@@ -53,13 +53,13 @@ public class ProgressManager : MonoBehaviour {
 		}		
 
 		// Debug.Log("Progress: " + progress + ". NextProgress: " + nextProgress);
-		if (progress < nextProgress) {
-			progress += Mathf.Max ( (nextProgress-progress)*0.01f, 0.000025f);
-		}
+		// if (progress < nextProgress) {
+		// 	progress += Mathf.Max ( (nextProgress-progress)*0.01f, 0.000025f);
+		// }
 	}
 	public void computeProgress()
 	{
-		Debug.Log ( "progress: "+progress+" totalSittingTime:"+totalSittingTime+" nearInteractionCounter:"+nearInteractionCounter+" totalTilesTraveled:" + totalTilesTraveled+" offset:"+prog_offset);
+//		Debug.Log ( "progress: "+progress+" totalSittingTime:"+totalSittingTime+" nearInteractionCounter:"+nearInteractionCounter+" totalTilesTraveled:" + totalTilesTraveled+" offset:"+prog_offset);
 		nextProgress = ((Mathf.Sqrt( totalSittingTime * (float)(nearInteractionCounter)))/100.0f)+prog_offset;
 		nextProgress += Mathf.Log10( totalTilesTraveled + 1)*0.05f;
 		nextProgress = Mathf.Max(0.0f, Mathf.Min(1.00001f, nextProgress));		

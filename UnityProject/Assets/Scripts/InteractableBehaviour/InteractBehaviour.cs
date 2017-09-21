@@ -32,7 +32,6 @@ namespace Assets.Scripts.InteractableBehaviour
 
         public virtual void React(float playerProgress, Vector3 playerPos)
         {
-
             PlayerInRange = true;
             PlayerPos = playerPos;
         }
