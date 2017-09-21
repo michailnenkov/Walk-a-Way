@@ -10,7 +10,13 @@ public class RabbitGroupBehavior : ReactableBehaviour
 	//public AnimalBehaviour Behaviour; //{ get; private set; }
 	//private Vector3 initialFace;
 	public float playerProgress;
+
+	bool movingCloser = false;
+	bool waiting = false;
+
 	private Vector3 playerPos;
+
+	private Vector3 groupDirection;
 
     public RabbitGroupBehavior()
 	{
@@ -80,19 +86,43 @@ public class RabbitGroupBehavior : ReactableBehaviour
 					// Debug.Log("observe in range");
 					break;
                 case AnimalBehaviour.Curious:
-					// Debug.Log("curious in range");
-					// Debug.Log(distanceToPlayer);
+                    // Debug.Log("curious in range");
+                    // Debug.Log(distanceToPlayer);
 
-					GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(playerPos)); // Look at player
-					
-					// if (distanceToPlayer > 2) {
-					// 	CurrentSpeed = Speed * -1;
-					// } else {
-					// 	// if (CurrentSpeed > 0) { CurrentSpeed += Decel; }
-					// 	CurrentSpeed = 0;
-					// }
-					break;
-				case AnimalBehaviour.Move:
+                    if (distanceToPlayer > 4 && !waiting)
+                    {
+						Debug.Log("moving closer");
+						FacePlayer();
+						//move closer
+                        CurrentSpeed = Speed;
+                        movingCloser = true;
+                    }
+                    else
+                    {
+                        CurrentSpeed = 0;
+                        if (movingCloser)
+                        { // if just finished coming closer, wait a little bit before following again
+                            movingCloser = false;
+                            StartCoroutine("WaitInPlace");
+                        }
+                    }
+
+                    if (distanceToPlayer < 2)
+                    {
+						Debug.Log("too close!");
+						//keep distance
+						FaceAway();
+						CurrentSpeed = Speed;
+                    }
+
+
+
+                    // if (distanceToPlayer < 1.5f) {
+                    // 	GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.transform.LookAt(playerPos*-1));
+                    // 	CurrentSpeed = Speed;
+                    // }
+                    break;
+                case AnimalBehaviour.Move:
 					// Debug.Log("Move in range");
 
 					break;
@@ -118,7 +148,7 @@ public class RabbitGroupBehavior : ReactableBehaviour
 					break;
                 case AnimalBehaviour.Curious:
 					Debug.Log("Curious out of range");
-					GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Bliss());
+					//GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Bliss());
 
 					// GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(PlayerPos + transform.position)); // Look at player
 
@@ -131,7 +161,7 @@ public class RabbitGroupBehavior : ReactableBehaviour
 					break;
 				case AnimalBehaviour.Move:
 					// Debug.Log("Move out of range");
-					if (CurrentSpeed > 0) { CurrentSpeed += Decel; }
+					//if (CurrentSpeed > 0) { CurrentSpeed += Decel; }
 					break;
 				case AnimalBehaviour.Flee:
 					// Debug.Log("Flee out of range");
@@ -139,12 +169,38 @@ public class RabbitGroupBehavior : ReactableBehaviour
 			}
 		}
 
-		Debug.Log(playerPos);
-		Vector3 move = playerPos*-1;
+		// Debug.Log(playerPos);
+		// Vector3 move = playerPos*-1;
 		//move.y *= 0;
 
-		move.Normalize();
+		//move.Normalize();
 
-		transform.position += (move * CurrentSpeed * Time.deltaTime);
+		// transform.position += (move * CurrentSpeed * Time.deltaTime);
+		transform.localPosition += (groupDirection * CurrentSpeed * Time.deltaTime);
+	}
+
+    private void FacePlayer()
+    {
+        GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(playerPos)); // Look at player		
+        Vector3 horizontalPlayerPos = playerPos;
+        horizontalPlayerPos.y = transform.position.y;
+        transform.LookAt(horizontalPlayerPos);
+		groupDirection = transform.forward;
+    }
+
+	private void FaceAway()
+    {
+        GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(playerPos * -1)); // Look at player		
+        Vector3 horizontalPlayerPos = playerPos;
+        horizontalPlayerPos.y = transform.position.y;
+        transform.LookAt(horizontalPlayerPos);
+		groupDirection = transform.forward*-1;
+    }
+
+    IEnumerator WaitInPlace() {
+		waiting = true;
+		yield return new WaitForSeconds(Random.Range(1.0f, 6.0f));
+		waiting = false;
+		yield return null;
 	}
 }
