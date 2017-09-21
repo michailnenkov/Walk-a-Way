@@ -16,7 +16,7 @@ public class RabbitGroupBehavior : ReactableBehaviour
 
 	private Vector3 playerPos;
 
-	private Vector3 groupDirection;
+	private Vector3 animalDirection;
 
     public RabbitGroupBehavior()
 	{
@@ -176,25 +176,29 @@ public class RabbitGroupBehavior : ReactableBehaviour
 		//move.Normalize();
 
 		// transform.position += (move * CurrentSpeed * Time.deltaTime);
-		transform.localPosition += (groupDirection * CurrentSpeed * Time.deltaTime);
+		// transform.localPosition += (animalDirection * CurrentSpeed * Time.deltaTime);
+		transform.localPosition += (animalDirection * CurrentSpeed * Time.deltaTime);
+		transform.eulerAngles = new Vector3(0,transform.eulerAngles.y,transform.eulerAngles.z);
 	}
 
     private void FacePlayer()
     {
         GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(playerPos)); // Look at player		
-        Vector3 horizontalPlayerPos = playerPos;
-        horizontalPlayerPos.y = transform.position.y;
-        transform.LookAt(horizontalPlayerPos);
-		groupDirection = transform.forward;
+        // Vector3 horizontalPlayerPos = playerPos;
+        // horizontalPlayerPos.y = transform.position.y;
+        // transform.LookAt(horizontalPlayerPos);
+		animalDirection = transform.forward;
     }
 
 	private void FaceAway()
     {
-        GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(playerPos * -1)); // Look at player		
-        Vector3 horizontalPlayerPos = playerPos;
-        horizontalPlayerPos.y = transform.position.y;
-        transform.LookAt(horizontalPlayerPos);
-		groupDirection = transform.forward*-1;
+        GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(playerPos)); // Look at player
+		transform.Rotate(0,180,0);
+        // Vector3 horizontalPlayerPos = playerPos;
+        // horizontalPlayerPos.y = transform.position.y;
+        // transform.LookAt(horizontalPlayerPos);
+		animalDirection = transform.forward;
+
     }
 
     IEnumerator WaitInPlace() {
