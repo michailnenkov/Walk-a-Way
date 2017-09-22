@@ -285,9 +285,14 @@ public class PlayerController : MonoBehaviour {
 		progressMng.computeProgress();
 		progress = progressMng.getProgress();
 		// set attributes accordingly
-		float grey = progressMng.getValue(ProgressManager.Values.GreyPlayerColor);
+
+		//set player char opacity
+		//float grey = progressMng.getValue(ProgressManager.Values.GreyPlayerColor);
+		float grey = 0.6f;
 		playerMat.color = new Color(grey,grey,grey,  progressMng.getValue(ProgressManager.Values.Alpha)); // transparency
-		//rigidbody.isKinematic = progress <= THRESH_FOR_NO_COLLISION; // starts colliding
+
+		// rigidbody.isKinematic = progress <= THRESH_FOR_NO_COLLISION; // starts colliding
+
 		speed =  progressMng.getValue(ProgressManager.Values.Speed); // reduced speed
 		duration = progressMng.getValue(ProgressManager.Values.InertiaDuration); // reduced sliding
 		distance = progressMng.getValue(ProgressManager.Values.InertiaDistance); // reduced sliding

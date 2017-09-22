@@ -91,7 +91,7 @@ public class ProgressManager : MonoBehaviour {
 		switch(inVal)
 		{
 			case Values.Alpha:
-		        return Mathf.Min(1.0f, 0.3f+progress*5.0f);
+		        return Mathf.Min(1.0f, 0.3f+progress);
 		    case Values.Speed:		
 			
 				Vector2[] speedValues = {
