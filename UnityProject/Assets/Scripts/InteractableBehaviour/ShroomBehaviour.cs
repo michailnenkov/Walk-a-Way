@@ -66,7 +66,7 @@ namespace Assets.Scripts.InteractableBehaviour
         public override string customInteractiveText()
         {
             //Press E
-            return "to east the Mushroom";
+            return "to eat the Mushroom";
         }
 
         // Use this for initialization
