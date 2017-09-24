@@ -635,7 +635,7 @@ function ScatterRenderer(toRender) {														//----ScatterRenderer----//
 
 function CurrentTile() {
 	
-	var currentTile = Vector2(xOff, zOff);
+	var currentTile = String.Format("{0}{1}{2}", xOff, "x", zOff);
 	
 	return currentTile;
 }

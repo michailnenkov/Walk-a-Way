@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ProgressManager : MonoBehaviour {
 	
@@ -8,19 +9,16 @@ public class ProgressManager : MonoBehaviour {
 	
 	public GameObject sun;
 	public GameObject light;
-	public GameObject groundGen;
-
+	public GameObject ground;
 	public float timer = 0;
 	public float timerRate;
 	float sunRot = 0;
 	public float progress= 0.0f;
-	private float nextProgress = 0.0f;
 	private float totalSittingTime = 0.0f; //100.0f for testing
-	private int nearInteractionCounter = 0; // 45 for testing
 	public int totalTilesTraveled = 1; // 45 for testing
 	public int totalTilesVisited = 1; //number of unique tiles visited
-	// Debug
-	float prog_offset = 0.0f;
+	Dictionary<string, float> timeAtTile = new Dictionary<string, float>();
+
 	
 	// Use this for initialization
 	void Start () {
@@ -31,6 +29,7 @@ public class ProgressManager : MonoBehaviour {
 		 InvokeRepeating("AddValue", 1, 0.01f); // function string, start after float, repeat rate float
  
 	}
+	
 	void AddValue() {
 		timer += timerRate;
 		if (timer > 1.0f) {
@@ -42,23 +41,46 @@ public class ProgressManager : MonoBehaviour {
 	void Update ()
     {
         UpdateSun();
-
         // Debug.Log(totalSittingTime);
+        TrackTimeOnTile();
 
-		if (progress < 0.5f) {
-			// progress = totalSittingTime/240; //two minutes
+		if (progress < 0.5f)
+        {
+            // progress = totalSittingTime/240; //two minutes
 
-			progress = totalTilesVisited/totalTilesTraveled * totalSittingTime;
-		}
+            progress = totalTilesVisited / totalTilesTraveled * totalSittingTime;
+        }
 
-
-
-        // Debug.Log("Progress: " + progress + ". NextProgress: " + nextProgress);
-        // if (progress < nextProgress) {
-        // 	progress += Mathf.Max ( (nextProgress-progress)*0.01f, 0.000025f);
-        // }
+		//for testing only
+		if (Input.GetKeyDown ("space")) print (TimeOnTile());
     }
-	
+
+    private void TrackTimeOnTile()
+    {
+        float temp = 0;
+        string currentTile = ground.GetComponent<GroundGen>().CurrentTile();
+        if (timeAtTile.TryGetValue(currentTile, out temp))
+        {
+            timeAtTile[currentTile] += Time.deltaTime;
+        }
+        else
+        {
+            timeAtTile.Add(currentTile, 0);
+        }
+    }
+
+	private float TimeOnTile() {
+		//Always current tile
+		float temp = 0;
+		string currentTile = ground.GetComponent<GroundGen>().CurrentTile();
+		if (timeAtTile.TryGetValue(currentTile, out temp))
+        {
+            return temp;
+        } else {
+			return 0;
+		}
+	}
+
     private void UpdateSun()
     {
         sunRot = Mathf.Lerp(220.0f, 365.0f, timer);
@@ -75,13 +97,6 @@ public class ProgressManager : MonoBehaviour {
         }
     }
 
-    // 	public void computeProgress()
-    // 	{
-    // //		Debug.Log ( "progress: "+progress+" totalSittingTime:"+totalSittingTime+" nearInteractionCounter:"+nearInteractionCounter+" totalTilesTraveled:" + totalTilesTraveled+" offset:"+prog_offset);
-    // 		nextProgress = ((Mathf.Sqrt( totalSittingTime * (float)(nearInteractionCounter)))/100.0f)+prog_offset;
-    // 		nextProgress += Mathf.Log10( totalTilesTraveled + 1)*0.05f;
-    // 		nextProgress = Mathf.Max(0.0f, Mathf.Min(1.00001f, nextProgress));		
-    // 	}
     public float getProgress()
 	{
 		return progress;
@@ -136,20 +151,7 @@ public class ProgressManager : MonoBehaviour {
 		
 		return progress;
 	}
-	public float getProgressOffset ()
-	{
-		return prog_offset;
-	}
 
-
-
-	public void setProgressOffset ( float inVal)
-	{
-		prog_offset = inVal;
-		// computeProgress();
-		progress = nextProgress;
-		//progress += inVal;
-	}
 	public float multipointInterpolation(Vector2[] inVal, float inProgress) 
 	{
 		// find 2 closest points in the array
