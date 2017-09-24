@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour {
 	
 	//privates
 	private GameObject groundTile;
-	private bool isSitting=false;
+	public bool isSitting=false;
 	private int movementMode = -1;
 	protected Animator animator;
 	// interactive stuff

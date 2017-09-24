@@ -6,7 +6,7 @@ public class ProgressManager : MonoBehaviour {
 	
 	public enum Mechanic {Sitting, Travel, Interaction}
 	public enum Values {Alpha, Speed, InertiaDuration, InertiaDistance, GreyPlayerColor, BackgroundColorFactor, CollisionSizePercent}
-	
+	public PlayerController player;
 	public GameObject sun;
 	public GameObject light;
 	public GameObject ground;
@@ -14,9 +14,11 @@ public class ProgressManager : MonoBehaviour {
 	public float timerRate;
 	float sunRot = 0;
 	public float progress= 0.0f;
+	public float baseRateOfProgress = 0.1f;
+	public float rateOfProgress = 0.1f;
 	private float totalSittingTime = 0.0f; //100.0f for testing
-	public int totalTilesTraveled = 1; // 45 for testing
-	public int totalTilesVisited = 1; //number of unique tiles visited
+	public float totalTilesTraveled = 1; // 45 for testing
+	public float totalTilesVisited = 1; //number of unique tiles visited
 	Dictionary<string, float> timeAtTile = new Dictionary<string, float>();
 
 	
@@ -44,16 +46,52 @@ public class ProgressManager : MonoBehaviour {
         // Debug.Log(totalSittingTime);
         TrackTimeOnTile();
 
-		if (progress < 0.5f)
-        {
-            // progress = totalSittingTime/240; //two minutes
+		// if (progress < 0.5f)
+        // {
+        //     // progress = totalSittingTime/240; //two minutes
 
-            progress = totalTilesVisited / totalTilesTraveled * totalSittingTime;
-        }
+		//  this maps the time from 60s to 0s as 1 to 0
+		// 	float timeOnTileMultipier = Mathf.InverseLerp(60,0,TimeOnTile());
+		// 	//this takes the multiplier and makes it so that from 60 to 30 is 1 to 0, the 30 to 0 is 0 to -1 – therefore reversing progress when staying too long
+		// 	float timeOnTilePenalty = Mathf.Lerp(-1,1, timeOnTileMultipier);
+		// 	//Debug.Log(timeOnTilePenalty);
+
+		// 	if (timeOnTilePenalty != 0) {
+        //     	progress = ( (totalTilesVisited / totalTilesTraveled) * (totalSittingTime/240) ) * (timeOnTilePenalty);
+		// 	}
+		// 	Debug.Log("(" + totalTilesVisited + "/" + totalTilesTraveled + ")*(" + totalSittingTime/240 + ")*" + timeOnTilePenalty);
+        // } else {
+		// }
+
+
+		float timeOnTileMultipier = Mathf.InverseLerp(60,0,TimeOnTile());
+		float timeOnTilePenalty = Mathf.Lerp(-1,1, timeOnTileMultipier);	
+
+		float explorationMultiplier = totalTilesVisited/totalTilesTraveled;
+		Debug.Log(totalTilesVisited/totalTilesTraveled);
+
+		
+
+		rateOfProgress = baseRateOfProgress * explorationMultiplier * timeOnTilePenalty * (totalSittingTime/240) + (totalTilesVisited/100000);
+		// Debug.Log("baseRateOfProgress: " + baseRateOfProgress + " * explorationMultiplier: " + explorationMultiplier + "* timeOnTilePenalty: " + timeOnTilePenalty);
+
+
+		if (player.isSitting) {
+			progress += rateOfProgress;
+		}
 
 		//for testing only
-		if (Input.GetKeyDown ("space")) print (TimeOnTile());
+		if (Input.GetKeyDown ("space")) {
+
+			Debug.Log(""); 
+
+		}
     }
+
+
+
+
+
 
     private void TrackTimeOnTile()
     {
@@ -68,7 +106,6 @@ public class ProgressManager : MonoBehaviour {
             timeAtTile.Add(currentTile, 0);
         }
     }
-
 	private float TimeOnTile() {
 		//Always current tile
 		float temp = 0;
