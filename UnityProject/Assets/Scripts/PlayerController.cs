@@ -97,6 +97,8 @@ public class PlayerController : MonoBehaviour {
 		// colliding stuffs
         collisionHelper = transform.Find("ObstacleCollider").gameObject.GetComponent<SphereCollider>();
 		collidingObj = new List<SphereCollider>();
+
+		setPlayersYPosition();
 	}
 
 	void Update () {
