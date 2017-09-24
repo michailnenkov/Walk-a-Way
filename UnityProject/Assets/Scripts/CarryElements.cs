@@ -197,18 +197,10 @@ public class CarryElements : MonoBehaviour {
         Debug.Assert(flower != null, "flower != null");
         flower.parent = transform;
 
-        //flower.rotation = Quaternion.LookRotation(new Vector3(0,1,0));
-        //flower.rotation *= Quaternion.Euler(0, GetNextAngle(), 0);
-        //flower.rotation *= Quaternion.Euler(75, 0, 0);
-
-        //Vector3 dirVec = new Vector3(flower.rotation.x, flower.rotation.y, flower.rotation.z);
-        //dirVec.Normalize();
-        //flower.position += dirVec * 0.2f;
-
         carryList.Add(flower);
     }
 
-    public void PickBranch() {
+    public void PickBranch(float progress) {
         transform.Find("Branch").gameObject.SetActive(true);
     }
 

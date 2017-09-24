@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour {
     private List<ActableBehaviour> inRangeElements;
     private const float THRESH_FOR_NO_COLLISION = 0.1f;
 	private const float THRESH_FOR_PEBBLE_KICKING = 0.1f;
-	private const float THRESH_FOR_TRUE_INTERACTION_TO_COUNT = 0.1f;
+	private const float THRESH_FOR_TRUE_INTERACTION_TO_COUNT = 0.5f;
 	private const float THRESH_FOR_SITTING_SOUND_FADEOUT = 5.0f; // in seconds
 	private float currSittingTime = 0.0f; //100.0f for testing
 	//Inertia
@@ -139,9 +139,9 @@ public class PlayerController : MonoBehaviour {
 			currSittingTime += Time.deltaTime; // count seconds spend sitting;
 		}
 		FadeSounds(Time.deltaTime);
-		if (progress > 0.5f) {		
+		// if (progress > 0.5f) {		
 			DisplayInteractionTooltip();		
-		}
+		// }
 		animationHandling();
 	    Carry.UpdateCarry(progress);
 		lastH = h;
@@ -226,8 +226,6 @@ public class PlayerController : MonoBehaviour {
         InteractableBehaviour closest = FindClosestInteractable();
         if (closest != null)
         {
-            
-
             CarryObject co = closest.Activate(progress, ToPlayerPos(closest));
             if (co == CarryObject.Flower)
             {
@@ -241,9 +239,10 @@ public class PlayerController : MonoBehaviour {
             }
 			if (co == CarryObject.Branch) {
 				animator.SetBool("picking", true);
-				Carry.PickBranch();
+				Carry.PickBranch(progress);
 			}
-            //Carry.PickUpObject(co, progress);
+
+			
             gui.doneInteract();
             if (progress >= THRESH_FOR_TRUE_INTERACTION_TO_COUNT)
                 progressMng.usedMechanic(ProgressManager.Mechanic.Interaction);
@@ -616,7 +615,11 @@ public class PlayerController : MonoBehaviour {
 		if( closest != null) 
         {
 			if (closest.customInteractiveText() != null)
-				interactionTooltip.text = "Press <b>E</b> "+closest.customInteractiveText();
+				if (closest.name == "Flower(Clone)") {
+					interactionTooltip.text = "Press <b>E</b> "+closest.customInteractiveText();
+				} else if (progress >= 0.5f) {
+					interactionTooltip.text = "Press <b>E</b> "+closest.customInteractiveText();
+				}
 		}				
 	}
 	
