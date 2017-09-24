@@ -14,6 +14,7 @@ public class CarryElements : MonoBehaviour {
     public Transform TBouquet;
     private bool firstAfter = true;
     public Transform FlowerHead;
+    public Transform Branch;
     private int currentRot;
     private const int ADD_ROT = 135;
 
@@ -207,9 +208,13 @@ public class CarryElements : MonoBehaviour {
         carryList.Add(flower);
     }
 
+    public void PickBranch() {
+        transform.Find("Branch").gameObject.SetActive(true);
+    }
+
     public void EatBerry(float progress)
     {
-        ThrowBouquet();
+        //ThrowBouquet();
     }
 
     private float GetNextAngle()

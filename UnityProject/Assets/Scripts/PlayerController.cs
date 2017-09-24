@@ -9,7 +9,7 @@ using Assets.Scripts;
 //public enum for use in ActiveTile and WorldGeneration as well
 public enum Direction {North,South,East,West,None,NorthEast,NorthWest,SouthEast,SouthWest};
 public enum LayerList {Default,b,c,d,e,f,g,h,ignorePebbleCollision,withPebbleCollision};
-public enum CarryObject {Nothing, Flower, Clear,Berry}
+public enum CarryObject {Nothing, Flower, Clear, Berry, Branch}
 
 public class PlayerController : MonoBehaviour {
 	
@@ -71,6 +71,8 @@ public class PlayerController : MonoBehaviour {
     private bool currentPressG = false;
     //Carry
     public CarryElements Carry;
+
+	public int branchInventory = 0;
     
 
     //get the collider component once, because the GetComponent-call is expansive
@@ -102,9 +104,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
-		if (dead)
+		if (dead) {
 			return;
-
+		}
 		// Cache the inputs.
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
@@ -136,13 +138,19 @@ public class PlayerController : MonoBehaviour {
 		{
 			currSittingTime += Time.deltaTime; // count seconds spend sitting;
 		}
-		FadeSounds(Time.deltaTime);		
-		DisplayInteractionTooltip();		
-
+		FadeSounds(Time.deltaTime);
+		if (progress > 0.5f) {		
+			DisplayInteractionTooltip();		
+		}
 		animationHandling();
 	    Carry.UpdateCarry(progress);
 		lastH = h;
 		lastV = v;
+
+		if (branchInventory > 0) {
+
+		}
+
 	}
 
     void Action()
@@ -231,6 +239,10 @@ public class PlayerController : MonoBehaviour {
                 animator.SetBool("eating", true);
                 Carry.EatBerry(progress);
             }
+			if (co == CarryObject.Branch) {
+				animator.SetBool("picking", true);
+				Carry.PickBranch();
+			}
             //Carry.PickUpObject(co, progress);
             gui.doneInteract();
             if (progress >= THRESH_FOR_TRUE_INTERACTION_TO_COUNT)
@@ -536,7 +548,6 @@ public class PlayerController : MonoBehaviour {
 
 			progressMng.usedMechanic(ProgressManager.Mechanic.Travel);
 
-			//groundTile.GetComponent<GroundGen>().
 			setPlayersYPosition();
 		}
 		if( other.gameObject.tag == "Interactable")
@@ -550,16 +561,6 @@ public class PlayerController : MonoBehaviour {
 			}
 			
 			ActableBehaviour addThis = other.GetComponent<ActableBehaviour>();
-
-            /*if (addThis.GetType() == typeof (RabbitGroupBehavior))
-            {
-                RabbitGroupBehavior rabbit = (RabbitGroupBehavior) addThis;
-                Vector3 toRabVec = (rabbit.transform.position - transform.position);
-                toRabVec.y *= 0;
-                toRabVec.Normalize();
-                rabbit.runDirection = toRabVec;
-                rabbit.activate(progress);
-            }*/
 
 			inRangeElements.Add(addThis);
 			
@@ -728,5 +729,20 @@ public class PlayerController : MonoBehaviour {
 	{
 		StopSittingSound(0.0f);
 		dyingSound.Play();
+	}
+
+	public void AddToInventory(string loot) {
+
+		switch(loot) {
+			case "branch":
+				branchInventory++;
+				Debug.Log(branchInventory);
+			break;
+			case "flower":
+			break;
+			case "mushroom":
+			break;
+		}
+
 	}
 }
