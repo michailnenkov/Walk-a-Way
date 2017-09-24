@@ -92,7 +92,7 @@ public class RabbitGroupBehavior : ReactableBehaviour
 
                     if (distanceToPlayer > 3 && !waiting && !backingUp)
                     {
-						Debug.Log("moving closer");
+						// Debug.Log("moving closer");
 						FacePlayer();
 						//move closer
                         CurrentSpeed = Speed;
@@ -110,7 +110,7 @@ public class RabbitGroupBehavior : ReactableBehaviour
 
                     if (distanceToPlayer < 1.5f && !backingUp)
                     {
-						Debug.Log("too close!");
+						// Debug.Log("too close!");
 						
 						StartCoroutine("BackUp");
                     }

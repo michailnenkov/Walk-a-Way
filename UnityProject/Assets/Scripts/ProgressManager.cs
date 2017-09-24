@@ -11,6 +11,7 @@ public class ProgressManager : MonoBehaviour {
 	public GameObject light;
 	public GameObject ground;
 	public float timer = 0;
+	public float defaultTimerRate;
 	public float timerRate;
 	float sunRot = 0;
 	public float progress= 0.0f;
@@ -28,8 +29,9 @@ public class ProgressManager : MonoBehaviour {
 		sun = GameObject.Find("Sun");
 		light = GameObject.Find("DirectionalLight");
 
-		 InvokeRepeating("AddValue", 1, 0.01f); // function string, start after float, repeat rate float
- 
+		InvokeRepeating("AddValue", 1, 0.01f); // function string, start after float, repeat rate float
+
+		timerRate = defaultTimerRate;
 	}
 	
 	void AddValue() {
@@ -43,41 +45,25 @@ public class ProgressManager : MonoBehaviour {
 	void Update ()
     {
         UpdateSun();
-        // Debug.Log(totalSittingTime);
         TrackTimeOnTile();
-
-		// if (progress < 0.5f)
-        // {
-        //     // progress = totalSittingTime/240; //two minutes
-
-		//  this maps the time from 60s to 0s as 1 to 0
-		// 	float timeOnTileMultipier = Mathf.InverseLerp(60,0,TimeOnTile());
-		// 	//this takes the multiplier and makes it so that from 60 to 30 is 1 to 0, the 30 to 0 is 0 to -1 – therefore reversing progress when staying too long
-		// 	float timeOnTilePenalty = Mathf.Lerp(-1,1, timeOnTileMultipier);
-		// 	//Debug.Log(timeOnTilePenalty);
-
-		// 	if (timeOnTilePenalty != 0) {
-        //     	progress = ( (totalTilesVisited / totalTilesTraveled) * (totalSittingTime/240) ) * (timeOnTilePenalty);
-		// 	}
-		// 	Debug.Log("(" + totalTilesVisited + "/" + totalTilesTraveled + ")*(" + totalSittingTime/240 + ")*" + timeOnTilePenalty);
-        // } else {
-		// }
-
 
 		float timeOnTileMultipier = Mathf.InverseLerp(60,0,TimeOnTile());
 		float timeOnTilePenalty = Mathf.Lerp(-1,1, timeOnTileMultipier);	
 
 		float explorationMultiplier = totalTilesVisited/totalTilesTraveled;
-		Debug.Log(totalTilesVisited/totalTilesTraveled);
-
-		
 
 		rateOfProgress = baseRateOfProgress * explorationMultiplier * timeOnTilePenalty * (totalSittingTime/240) + (totalTilesVisited/100000);
 		// Debug.Log("baseRateOfProgress: " + baseRateOfProgress + " * explorationMultiplier: " + explorationMultiplier + "* timeOnTilePenalty: " + timeOnTilePenalty);
 
 
-		if (player.isSitting) {
+		if (player.isSitting && progress < 0.5f) {
 			progress += rateOfProgress;
+
+			timerRate = defaultTimerRate * rateOfProgress * 100000;
+		} else if (player.isSitting && progress >= 0.5f) {
+
+		} else {
+			timerRate = defaultTimerRate;
 		}
 
 		//for testing only
