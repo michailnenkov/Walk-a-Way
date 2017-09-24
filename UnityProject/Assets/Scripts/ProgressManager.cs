@@ -8,6 +8,7 @@ public class ProgressManager : MonoBehaviour {
 	
 	public GameObject sun;
 	public GameObject light;
+	public GameObject groundGen;
 
 	public float timer = 0;
 	public float timerRate;
@@ -15,8 +16,9 @@ public class ProgressManager : MonoBehaviour {
 	public float progress= 0.0f;
 	private float nextProgress = 0.0f;
 	private float totalSittingTime = 0.0f; //100.0f for testing
-	private uint nearInteractionCounter = 0; // 45 for testing
-	private uint totalTilesTraveled = 0; // 45 for testing
+	private int nearInteractionCounter = 0; // 45 for testing
+	public int totalTilesTraveled = 1; // 45 for testing
+	public int totalTilesVisited = 1; //number of unique tiles visited
 	// Debug
 	float prog_offset = 0.0f;
 	
@@ -37,34 +39,50 @@ public class ProgressManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        UpdateSun();
 
-		sunRot = Mathf.Lerp(220.0f, 365.0f, timer);		
-		sun.transform.eulerAngles = new Vector3(0,0,sunRot);
+        // Debug.Log(totalSittingTime);
 
-		//start dimming the light after 0.75 on the timer
-		if (timer > 0.75) {
-			light.GetComponent<Light>().intensity = Mathf.Lerp (0.0f, 2.0f, Mathf.InverseLerp (1.0f, 0.75f, timer));
+		if (progress < 0.5f) {
+			// progress = totalSittingTime/240; //two minutes
+
+			progress = totalTilesVisited/totalTilesTraveled * totalSittingTime;
 		}
 
-		//start increasing intensity of the light after between 0 and 0.25 on the timer
-		if (timer < 0.25) {
-			light.GetComponent<Light>().intensity = Mathf.Lerp (0.0f, 2.0f, Mathf.InverseLerp (0.0f, 0.25f, timer));
-		}		
 
-		// Debug.Log("Progress: " + progress + ". NextProgress: " + nextProgress);
-		// if (progress < nextProgress) {
-		// 	progress += Mathf.Max ( (nextProgress-progress)*0.01f, 0.000025f);
-		// }
-	}
-	public void computeProgress()
-	{
-//		Debug.Log ( "progress: "+progress+" totalSittingTime:"+totalSittingTime+" nearInteractionCounter:"+nearInteractionCounter+" totalTilesTraveled:" + totalTilesTraveled+" offset:"+prog_offset);
-		nextProgress = ((Mathf.Sqrt( totalSittingTime * (float)(nearInteractionCounter)))/100.0f)+prog_offset;
-		nextProgress += Mathf.Log10( totalTilesTraveled + 1)*0.05f;
-		nextProgress = Mathf.Max(0.0f, Mathf.Min(1.00001f, nextProgress));		
-	}
-	public float getProgress()
+
+        // Debug.Log("Progress: " + progress + ". NextProgress: " + nextProgress);
+        // if (progress < nextProgress) {
+        // 	progress += Mathf.Max ( (nextProgress-progress)*0.01f, 0.000025f);
+        // }
+    }
+	
+    private void UpdateSun()
+    {
+        sunRot = Mathf.Lerp(220.0f, 365.0f, timer);
+        sun.transform.eulerAngles = new Vector3(0, 0, sunRot);
+        //start dimming the light after 0.75 on the timer
+        if (timer > 0.75)
+        {
+            light.GetComponent<Light>().intensity = Mathf.Lerp(0.0f, 2.0f, Mathf.InverseLerp(1.0f, 0.75f, timer));
+        }
+        //start increasing intensity of the light after between 0 and 0.25 on the timer
+        if (timer < 0.25)
+        {
+            light.GetComponent<Light>().intensity = Mathf.Lerp(0.0f, 2.0f, Mathf.InverseLerp(0.0f, 0.25f, timer));
+        }
+    }
+
+    // 	public void computeProgress()
+    // 	{
+    // //		Debug.Log ( "progress: "+progress+" totalSittingTime:"+totalSittingTime+" nearInteractionCounter:"+nearInteractionCounter+" totalTilesTraveled:" + totalTilesTraveled+" offset:"+prog_offset);
+    // 		nextProgress = ((Mathf.Sqrt( totalSittingTime * (float)(nearInteractionCounter)))/100.0f)+prog_offset;
+    // 		nextProgress += Mathf.Log10( totalTilesTraveled + 1)*0.05f;
+    // 		nextProgress = Mathf.Max(0.0f, Mathf.Min(1.00001f, nextProgress));		
+    // 	}
+    public float getProgress()
 	{
 		return progress;
 	}
@@ -73,7 +91,7 @@ public class ProgressManager : MonoBehaviour {
 		switch(inMech)
 		{
 		    case Mechanic.Interaction:
-		        nearInteractionCounter++;
+		        //nearInteractionCounter++;
 		        break;
 		    case Mechanic.Sitting:		        
 				totalSittingTime  += inVal;
@@ -122,10 +140,13 @@ public class ProgressManager : MonoBehaviour {
 	{
 		return prog_offset;
 	}
+
+
+
 	public void setProgressOffset ( float inVal)
 	{
 		prog_offset = inVal;
-		computeProgress();
+		// computeProgress();
 		progress = nextProgress;
 		//progress += inVal;
 	}

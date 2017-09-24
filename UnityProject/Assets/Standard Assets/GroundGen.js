@@ -1,5 +1,7 @@
 ﻿//#pragma strict
 
+import System.Collections.Generic;
+
 var depthGenR: GameObject;																	//PUBLIC VARIABLES
 var depthGenL: GameObject;
 
@@ -10,7 +12,6 @@ var width : int;
 var height : int;
 
 var xOff : int;	
-var yOff: int;
 var zOff: int;
 
 @Range (0.0, 1.0)
@@ -66,6 +67,8 @@ var currentScatID;
 
 var tileStack = new Array();
 
+var visitedTiles = new List.<String>();
+
 var scatterStack = new Array();
 
 
@@ -73,10 +76,10 @@ var scatterStack = new Array();
 function Start() {																			//-----Start-----//
 
 	xOff = 0;
-	yOff = 0;
 	zOff = 0;
 	
 	tileStack[0] = "0x0";
+	visitedTiles.Add("0x0");
 	
 	bordersID = -1;
 	emptyID = 0;
@@ -136,6 +139,7 @@ function CheckMemory() {
 
 	inMemoryFlag = 0;
 
+	//convert the offset to a 0x0 format
 	var xs = xOff/19;
 	var zs = zOff/19;
 	
@@ -144,16 +148,20 @@ function CheckMemory() {
 	
 	currentScatID = String.Format("{0}{1}{2}", x, "x", z);
 	
+	//cycle through the tile stack and see if it already exist there
 	for (var i = 0; i<tileStack.length; i++) {
 	
 		if( tileStack[i] == currentScatID) {												//If it's an old one, get it from scatterStack and render it;
 						
 			currentScat = scatterStack[i];
+			//if it does exist, set the flag to in memoryd
 			inMemoryFlag = 1;
 			
 		}	
 	}
 	
+//	Debug.Log(scatterStack);
+
 	if(tileStack.length<memorySize) {												
 		
 		tileStack.Add(currentScatID);
@@ -166,12 +174,22 @@ function CheckMemory() {
 	}
 	
 	if (inMemoryFlag == 1) {																//If this tile is in the memory, fish out the scat and
+		//if it does exist, use the old scatter
 		ScatterRenderer(currentScat);
 		inMemoryFlag = 0;
 	} else {
+		//if it doesn't exist, generate a new scatter
 		currentScat = ProbabilityScatter();
 		ScatterRenderer(currentScat);
-	}	
+	}
+	
+	//add to visited tile, if not there already
+	if (visitedTiles.IndexOf(currentScatID) == -1) {
+		visitedTiles.Add(currentScatID);
+		GameObject.Find("Progression").GetComponent("ProgressManager").totalTilesVisited += 1;	
+	} else {
+		//Debug.Log("Tile " + currentScatID + " already in memory.");
+	}
 }
 
 
@@ -202,6 +220,8 @@ function showNextTile(dir) {																//-----ShowNextTile-----//
 																					
 
 function GenerateGround() {																	//-----GenerateGround-----//
+
+	Debug.Log("GenerateGround ran");
 
 	gameObject.AddComponent(MeshFilter);
 	gameObject.AddComponent(MeshRenderer);
@@ -279,8 +299,7 @@ function returnPlayerPos(x,z) {																//-----returnPlayerPos-----//
 	
 }
 
-function returnGroundY(x,z) {																//-----ReturnGroundY-----//
-	
+function returnGroundY(x,z) {																//-----ReturnGroundY-----//	
 // 	return Mathf.PerlinNoise(z*frequency+(zOff*frequency), 										//Single step Perlin noise for the ground
 // 							 x*frequency+(xOff*frequency))*scale;
 
@@ -304,38 +323,27 @@ function returnCurvature(x,z) {																//-----ReturnCurvature-----//
 
 function ChangeTerrain() {																	//-----ChangeTerrain-----//
 
-	
-	if (renderedInstances.length>0) {															//Clear renderedInstances for the new tile
-
-		
-	}
-
 	ground = GetComponent(MeshFilter).mesh;														//transfer height map data on mesh
 	
 	var vertices = ground.vertices;
 	
 	var index = 0;
 	
-	// vertices.length and index both cap at 400 so that's thy this works
+	// vertices.length and index both cap at 20x20 aka 400 so that's why this works
 	for(var i=0;i<width;i++) {
 		for(var j=0;j<height;j++) {	
 			vertices[index].y = returnGroundY(j,i);		
 			index++;
 		}
 	}
-
-	
 	
 	ground.vertices = vertices;
-	ground.RecalculateNormals();
-	
+	ground.RecalculateNormals();	
 	
 	gameObject.AddComponent(MeshCollider);														//Generate collision mesh for new tile
 	
-	depthGenR.GetComponent(DepthGenR).Generate();												//Make depth planes
+	depthGenR.GetComponent(DepthGenR).Generate();												//Make skirts
 	depthGenL.GetComponent(DepthGenL).Generate();
-
-
 }
 
 
@@ -625,7 +633,12 @@ function ScatterRenderer(toRender) {														//----ScatterRenderer----//
 }
 
 
-
+function CurrentTile() {
+	
+	var currentTile = Vector2(xOff, zOff);
+	
+	return currentTile;
+}
 
 
 

@@ -282,7 +282,7 @@ public class PlayerController : MonoBehaviour {
 		if(isSitting)
 			progressMng.usedMechanic(ProgressManager.Mechanic.Sitting, Time.deltaTime);
 		// compute new progress value:
-		progressMng.computeProgress();
+//		progressMng.computeProgress();
 		progress = progressMng.getProgress();
 		// set attributes accordingly
 
