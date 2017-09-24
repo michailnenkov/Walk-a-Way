@@ -641,12 +641,6 @@ public class PlayerController : MonoBehaviour {
 		const int y = 300;
         if (movementMode != -1)
         {
-            //progressbar
-            GUI.Label(new Rect(x, y, 120, 20), "Progress: " + progressMng.getProgress().ToString("#.##"));
-			float p = progressMng.getProgressOffset();
-            p = GUI.HorizontalSlider(new Rect(x, y + 20, 300, 10),p, -1.01f, 1.01f);
-			progressMng.setProgressOffset (p);
-
             //speed slider
             GUI.Label(new Rect(x, y + 40, 120, 20), "Speed: " + speed.ToString(CultureInfo.InvariantCulture));
             speed = GUI.HorizontalSlider(new Rect(x, y + 60, 300, 10), speed, 0f, 500.0f);
