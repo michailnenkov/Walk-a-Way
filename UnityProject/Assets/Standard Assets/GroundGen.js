@@ -29,6 +29,7 @@ var scaleDetail = 0.72;																		//Noise scale
 
 var flower : GameObject;																	//Tile Offsets
 var shroom : GameObject;
+var branch : GameObject;
 var bush : GameObject;
 var pebble : GameObject;
 var rabbits : GameObject;
@@ -58,6 +59,7 @@ var pebblesID;
 var grassID;
 var shroomsID;
 var underTreeID;
+var branchesID;
 
 var renderedInstances = new Array();
 
@@ -93,6 +95,7 @@ function Start() {																			//-----Start-----//
 	grassID = 8;
 	shroomsID = 9;
 	underTreeID = 10;
+	branchesID = 11;
 
 	
 	tileChangeFlag = 0;
@@ -356,6 +359,7 @@ function ProbabilityScatter() {																//-------ProbabilityScatter------
 	var grassProb = 0.3;
 	var pebbleProb = 0.1;
 	var flowerProb = 0.6;
+	var branchProb = 0.1;
 	
 	var animalProb = 0.005;
 	
@@ -418,6 +422,19 @@ function ProbabilityScatter() {																//-------ProbabilityScatter------
 					toRender[i] = shroomsID;
 					shroomCounter--;													
 				}	
+			}
+		}
+	}
+
+	for (i=0; i < toRender.length; i++) {														//SCATTER BRANCHES//
+		
+		if (toRender[i]==areolasID) {
+				
+			if (Random.Range(0.0,1.0)<branchProb) {
+			
+				toRender[i] = branchesID;													
+				
+				
 			}
 		}
 	}
@@ -570,6 +587,18 @@ function ScatterRenderer(toRender) {														//----ScatterRenderer----//
 				renderedInstances[i].transform.eulerAngles.y = Random.Range(0, 360);			//random rotation
 				
 			break;
+
+			case branchesID:
+			
+							temPos.y+=0.0; 																	//vertical offset
+						
+							renderedInstances[i] = Instantiate(branch, temPos, Quaternion.identity);		//instantiation
+			
+							renderedInstances[i].transform.eulerAngles.z = 90;
+			
+							renderedInstances[i].transform.eulerAngles.y = Random.Range(0, 360);			//random rotation
+			
+						break;
 			
 			case grassID:																	//render GRASS//
 				
