@@ -19,12 +19,6 @@ public class RabbitGroupBehavior : ReactableBehaviour
 
 	private Vector3 animalDirection;
 
-    public RabbitGroupBehavior()
-	{
-	    //base();
-	}
-
-
 	// Use this for initialization
 	void Start (){
 	}
@@ -119,23 +113,15 @@ public class RabbitGroupBehavior : ReactableBehaviour
 						FaceAway();
 						CurrentSpeed = Speed;
 					}
-
-
-
-                    // if (distanceToPlayer < 1.5f) {
-                    // 	GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.transform.LookAt(playerPos*-1));
-                    // 	CurrentSpeed = Speed;
-                    // }
                     break;
                 case AnimalBehaviour.Move:
 					// Debug.Log("Move in range");
 
 					break;
 				case AnimalBehaviour.Flee:
-					// Debug.Log("Flee in range");
-                    //GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(playerPos * -1 + transform.position)); // Look away from player and run
-					//CurrentSpeed = Speed;
-					break;
+
+				break;
+
 				default:
 					// Debug.Log("Default? in range");
 					break;
@@ -152,19 +138,8 @@ public class RabbitGroupBehavior : ReactableBehaviour
 					// Debug.Log("Observe out of range");
 					break;
                 case AnimalBehaviour.Curious:
-					// Debug.Log("Curious out of range");
-
-
-					//GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Bliss());
-					gameObject.GetComponent<RabbitMovement>().Bliss();
-
-					// GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Look(PlayerPos + transform.position)); // Look at player
-
-					// if (distanceToPlayer > 5) {
-					// 	CurrentSpeed = Speed * -1;
-					// } else {
-					// 	if (CurrentSpeed > 0) { CurrentSpeed += Decel; }
-					// }					
+				
+					gameObject.GetComponent<RabbitMovement>().Bliss();					
 
 					break;
 				case AnimalBehaviour.Move:
