@@ -66,12 +66,12 @@ public class ProgressManager : MonoBehaviour {
 			timerRate = defaultTimerRate;
 		}
 
-		//for testing only
-		if (Input.GetKeyDown ("space")) {
+		// //for testing only
+		// if (Input.GetKeyDown ("space")) {
 
-			Debug.Log(""); 
+		// 	Debug.Log(""); 
 
-		}
+		// }
     }
 
 

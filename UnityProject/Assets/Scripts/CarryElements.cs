@@ -13,11 +13,17 @@ public class CarryElements : MonoBehaviour {
     public Transform Branch;
     private int currentRot;
     private const int ADD_ROT = 135;
+    Transform[] branchChildren;
 
 	// Use this for initialization
     void Awake()
     {
         carryList = new List<Transform>();
+
+        branchChildren = Branch.GetComponentsInChildren<Transform>();
+        foreach (Transform child in branchChildren) {
+            child.transform.gameObject.SetActive(false);
+        }
 	}
 	
 	// Update is called once per frame
@@ -86,7 +92,9 @@ public class CarryElements : MonoBehaviour {
     }
 
     public void PickBranch(float progress) {
-        transform.Find("Branch").gameObject.SetActive(true);
+        foreach (Transform child in branchChildren) {
+            child.transform.gameObject.SetActive(true);
+        }
     }
 
     public void EatBerry(float progress)

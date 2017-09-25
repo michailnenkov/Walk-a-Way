@@ -588,17 +588,19 @@ function ScatterRenderer(toRender) {														//----ScatterRenderer----//
 				
 			break;
 
-			case branchesID:
+			case branchesID:																		//render BRANCHES//
 			
-							temPos.y+=0.0; 																	//vertical offset
-						
-							renderedInstances[i] = Instantiate(branch, temPos, Quaternion.identity);		//instantiation
+				temPos.y+=0.0; 																	//vertical offset
 			
-							renderedInstances[i].transform.eulerAngles.z = 90;
-			
-							renderedInstances[i].transform.eulerAngles.y = Random.Range(0, 360);			//random rotation
-			
-						break;
+				renderedInstances[i] = Instantiate(branch, temPos, Quaternion.identity);		//instantiation
+				
+				// renderedInstances[i].name = "Branch" + i + "(Clone)";
+
+				renderedInstances[i].transform.eulerAngles.z = 90;
+
+				renderedInstances[i].transform.eulerAngles.y = Random.Range(0, 360);			//random rotation
+	
+				break;
 			
 			case grassID:																	//render GRASS//
 				

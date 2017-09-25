@@ -151,6 +151,13 @@ public class PlayerController : MonoBehaviour {
 
 		}
 
+				//for testing only
+		if (Input.GetKeyDown ("space")) {
+
+			Debug.Log(inRangeElements.First()); 
+
+		}
+
 	}
 
     void Action()
@@ -229,7 +236,8 @@ public class PlayerController : MonoBehaviour {
             CarryObject co = closest.Activate(progress, ToPlayerPos(closest));
             if (co == CarryObject.Flower)
             {
-                animator.SetBool("picking", true);
+                ClearInventory();
+				animator.SetBool("picking", true);
                 Carry.PickFlower(progress);
             }
             if (co == CarryObject.Berry)
@@ -238,6 +246,7 @@ public class PlayerController : MonoBehaviour {
                 Carry.EatBerry(progress);
             }
 			if (co == CarryObject.Branch) {
+				ClearInventory();
 				animator.SetBool("picking", true);
 				Carry.PickBranch(progress);
 			}
@@ -597,6 +606,7 @@ public class PlayerController : MonoBehaviour {
 		
 		interactionTooltip.text = "";
 		InteractableBehaviour closest = FindClosestInteractable();
+//		Debug.Log(closest.name);
 		if( closest != null) 
         {
 			if (closest.customInteractiveText() != null)
@@ -730,5 +740,15 @@ public class PlayerController : MonoBehaviour {
 			break;
 		}
 
+	}
+
+	public void ClearInventory() {
+		Transform[] children = GameObject.Find("CarryingPosition").GetComponentsInChildren<Transform>();
+
+		foreach (Transform child in children) {
+			if (child.name != "CarryingPosition") {
+				child.gameObject.SetActive(false);
+			}
+		}
 	}
 }

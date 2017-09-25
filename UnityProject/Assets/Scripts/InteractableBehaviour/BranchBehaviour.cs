@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Collections;
 using UnityEngine;
 using System.Linq;
 
@@ -32,7 +33,13 @@ namespace Assets.Scripts.InteractableBehaviour{
 
                 player.AddToInventory("branch");
 
-                gameObject.SetActive(false);
+                Transform[] children = gameObject.GetComponentsInChildren<Transform>();
+
+                foreach (Transform child in children) {
+                    if (child.name != "Branch(Clone)") {
+                        child.gameObject.SetActive(false);
+                    }
+                }
 
                 return CarryObject.Branch;
 
