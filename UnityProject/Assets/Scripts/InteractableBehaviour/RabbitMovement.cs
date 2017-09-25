@@ -23,13 +23,13 @@ public class RabbitMovement : MonoBehaviour
 	}
 
     void OnTriggerEnter(Collider other)
-    {
+    {   
         if (other.tag == "NextTileTriggers")
         {
+            //game object needs to have a rigidbody, otherwise doesn't work
             gameObject.SetActive(false);
-            //GetComponentsInChildren<MeshRenderer>().ToList().ForEach(e => e.renderer.enabled = false);
             //TODO: call groundgen and inform that a rabbit have moved out
-            //Destroy(this);
+            // Destroy(this);
         }
     }
 
