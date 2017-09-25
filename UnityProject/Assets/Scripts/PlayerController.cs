@@ -271,12 +271,14 @@ public class PlayerController : MonoBehaviour {
     }
 
 	private void MakeFire() {
-		Debug.Log("fire!");
-		Vector3 position = transform.position;
-		position = position+(transform.right*1.1f);
-		position.y = groundTile.GetComponent<GroundGen>().returnPlayerPos(position.x, position.z) - 0.2f;
-		Instantiate(fire, position, Quaternion.identity);
 
+		if (branchInventory >= 3) {
+			Vector3 position = transform.position;
+			position = position+(transform.right*1.1f);
+			position.y = groundTile.GetComponent<GroundGen>().returnPlayerPos(position.x, position.z) - 0.2f;
+			Instantiate(fire, position, Quaternion.identity);
+			branchInventory -= 3;
+		}
 	}
 
 	private void animationHandling()
