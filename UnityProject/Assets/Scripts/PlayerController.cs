@@ -637,7 +637,10 @@ public class PlayerController : MonoBehaviour {
 				} else if (progress >= 0.5f) {
 					interactionTooltip.text = "Press <b>E</b> "+closest.customInteractiveText();
 				}
-		}				
+		} else if (branchInventory >= 3) {
+			// Debug.Log("here");
+			interactionTooltip.text = "Press <b>F</b> to make fire";
+		}			
 	}
 	
     public void channeledTriggerExit(Collider other)
