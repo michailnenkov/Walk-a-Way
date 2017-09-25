@@ -11,6 +11,7 @@ public class ProgressManager : MonoBehaviour {
 	public GameObject light;
 	public GameObject ground;
 	public GameObject wolf;
+	private bool wolfSpawned = false;
 	public float timer = 0;
 	public float defaultTimerRate;
 	public float timerRate;
@@ -67,16 +68,32 @@ public class ProgressManager : MonoBehaviour {
 			timerRate = defaultTimerRate;
 		}
 
+		if (progress > 0.5 && !wolfSpawned) {
+			if (timer < 0.12f || timer > 0.9f) {
+				StartCoroutine(startSpawningWolf());
+			}
+		}
+
 		//for testing only
 		if (Input.GetKeyDown ("space")) {
-
-			spawnWolf();
-
+			
 		}
     }
 
 
-
+	IEnumerator startSpawningWolf() {
+		wolfSpawned = true;
+		Debug.Log("wolf started spawning");
+		yield return new WaitForSeconds(Random.Range(10, 60));
+		if (timer < 0.12f || timer > 0.9f) {
+			Debug.Log("wolf spawned!");
+			spawnWolf();
+		} else {
+			wolfSpawned = false;
+			Debug.Log("wolf not spawned");
+		}
+		yield return null;
+	}
 
 
 
