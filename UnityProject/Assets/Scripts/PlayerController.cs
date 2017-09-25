@@ -278,6 +278,9 @@ public class PlayerController : MonoBehaviour {
 			position.y = groundTile.GetComponent<GroundGen>().returnPlayerPos(position.x, position.z) - 0.2f;
 			Instantiate(fire, position, Quaternion.identity);
 			branchInventory -= 3;
+			if (branchInventory < 1) {
+				ClearInventory();
+			}
 		}
 	}
 
