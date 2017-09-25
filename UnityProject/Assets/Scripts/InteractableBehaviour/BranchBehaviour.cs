@@ -20,7 +20,7 @@ namespace Assets.Scripts.InteractableBehaviour{
         }
 
         public override CarryObject Activate(float playerProgress, Vector3 playerPos)
-        {
+        {         
             if(!branchPicked & playerProgress <= 0.5f)
             {
                 return CarryObject.Nothing;
@@ -40,7 +40,6 @@ namespace Assets.Scripts.InteractableBehaviour{
 
             return CarryObject.Nothing;
         }
-
         public override string customInteractiveText()
         {
             //Press E

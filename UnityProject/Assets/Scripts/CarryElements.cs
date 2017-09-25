@@ -3,12 +3,8 @@ using System.Linq;
 using Assets.Scripts.InteractableBehaviour;
 using UnityEngine;
 using System.Collections;
-using Debug = System.Diagnostics.Debug;
 
 public class CarryElements : MonoBehaviour {
-
-    //Carried object
-    //public CarryObject Obj { get; set; }
     internal List<Transform> carryList;
     public float fadeCarry;
     public Transform TBouquet;
@@ -22,7 +18,6 @@ public class CarryElements : MonoBehaviour {
     void Awake()
     {
         carryList = new List<Transform>();
-        //carryList = GetComponentsInChildren<Transform>().Where(e => e.tag == "CarryObject").ToList();
 	}
 	
 	// Update is called once per frame
@@ -74,116 +69,6 @@ public class CarryElements : MonoBehaviour {
         //0.3 => 5 sec
         return 2 + (progress * 10);
     }
-    
-    /*
-    public void PickUpObject(CarryObject pickedObject, float progress)
-    {
-        switch (pickedObject)
-        {
-            case CarryObject.Flower:
-                AddFlower();
-                else
-                {
-
-                }
-                break;
-            case CarryObject.Clear:
-                //Remove existing flowers
-                //Set carry to nothing
-                break;
-            case CarryObject.Nothing:
-                //Do nothing?
-                break;
-
-
-        }
-        {
-
-        }
-
-        //SetCarryShow();
-
-        
-        if (progress <= FlowerBehaviour.RealFlowerPick & pickedObject == CarryObject.Flower)
-        {
-            
-            Obj = pickedObject;
-        }
-        else if (progress > FlowerBehaviour.RealFlowerPick || pickedObject != CarryObject.Flower)//&&(pickedObject == CarryObject.Nothing && Obj == CarryObject.Flower))
-        {
-            //pickedObject == CarryObject.Nothing
-            //ThrowBouquet();
-            //Check combination
-            CarryObject nObj = CombineObject(pickedObject);
-
-            //Set CarryObject to new object
-            Obj = nObj;
-        }
-        //else
-        //{
-        //    //Extreme jury-rigging
-        //    CarryObject nObj = CombineObject(pickedObject);
-        //    //Set CarryObject to new object
-        //    Obj = nObj;
-        //}
-        //Fade out flower before 0.3
-
-
-        
-    }
-
-    private CarryObject CombineObject(CarryObject newObject)
-    {
-        switch (Obj)
-        {
-            case CarryObject.Clear:
-                return CarryObject.Nothing;
-            case CarryObject.Nothing:
-                return newObject;
-            case CarryObject.Bouquet:
-            case CarryObject.Flower:
-                switch (newObject)
-                {
-                    case CarryObject.Flower:
-                        return CarryObject.Bouquet;
-                    default:
-                        return Obj;
-                }
-            default:
-                return CarryObject.Nothing;
-        }
-    }
-
-    private void SetCarryShow()
-    {
-        string ObjName;
-
-        switch (Obj)
-        {
-            case CarryObject.Nothing:
-                ObjName = "Nothing";
-                break;
-            case CarryObject.Leaf:
-                ObjName = "Leaf";
-                break;
-            case CarryObject.Flower:
-                ObjName = "SingleFlower";
-                break;
-            case CarryObject.Bouquet:
-                ObjName = "Bouquet";
-                break;
-            default:
-                ObjName = "Nothing";
-                break;
-        }
-
-        carryList.ForEach(e => e.gameObject.SetActive(false));
-
-        Transform newRend = carryList.FirstOrDefault(e => e.name == ObjName);
-
-        newRend.gameObject.SetActive(true);
-    }
-    */
 
     public void PickFlower(float progress)
     {

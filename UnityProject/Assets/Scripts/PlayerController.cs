@@ -580,29 +580,14 @@ public class PlayerController : MonoBehaviour {
 	
     private InteractableBehaviour FindClosestInteractable()
 	{
-	    List<InteractableBehaviour> intera = inRangeElements.Where(e => e is InteractableBehaviour).Cast<InteractableBehaviour>().ToList();
-		if( intera.Count < 1)
+	    List<InteractableBehaviour> interactable = inRangeElements.Where(e => e is InteractableBehaviour).Cast<InteractableBehaviour>().ToList();
+		if( interactable.Count < 1)
 			return null;
         //Slightly clunky
-	    return intera.First(
+	    return interactable.First(
 	            e =>
 	            Vector3.Distance(transform.position, e.transform.position) <=
-	            intera.Min(f => Vector3.Distance(transform.position, f.transform.position)));
-
-		//ActableBehaviour ret = intera[0];
-		//float dist = Vector3.Distance(transform.position, inRangeElements[0].transform.position);
-		//if( inRangeElements.Count == 1)
-        //    return ret;
-        //foreach (ActableBehaviour i in inRangeElements)
-        //{
-        //    if( dist > Vector3.Distance(transform.position, i.transform.position))
-        //    {
-        //        dist = Vector3.Distance(transform.position, i.transform.position);
-        //        ret = i;
-        //    }
-        //}
-        //return ret;
-
+	            interactable.Min(f => Vector3.Distance(transform.position, f.transform.position)));
 	}
 
 	private void DisplayInteractionTooltip()
@@ -627,17 +612,15 @@ public class PlayerController : MonoBehaviour {
     {
         switch (other.gameObject.tag)
         {
-            case "Interactable":
-                {
-                    ActableBehaviour removeThis = other.GetComponent<ActableBehaviour>();
-                    if (removeThis.GetType() == typeof(ReactableBehaviour))
-                    {
-                        ((ReactableBehaviour)removeThis).Deactivate();
-                    }
-                    inRangeElements.Remove(removeThis);
-
-                }
-                break;
+            case "Interactable": 
+				ActableBehaviour removeThis = other.GetComponent<ActableBehaviour>();
+				if (removeThis.GetType() == typeof(ReactableBehaviour))
+				{
+					((ReactableBehaviour)removeThis).Deactivate();
+				}
+	//					Debug.Log("Removing" + removeThis.name);
+				inRangeElements.Remove(removeThis);
+			break;
         }
     }
 

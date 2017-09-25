@@ -152,7 +152,7 @@ public class RabbitGroupBehavior : ReactableBehaviour
 					// Debug.Log("Observe out of range");
 					break;
                 case AnimalBehaviour.Curious:
-					Debug.Log("Curious out of range");
+					// Debug.Log("Curious out of range");
 
 
 					//GetComponentsInChildren<RabbitMovement>().ToList().ForEach(e => e.Bliss());
