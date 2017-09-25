@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour {
     //Currently Pressing Sit & Interact
     private bool currentPressSit = false;
     private bool currentPressInteract = false;
+	private bool currentPressFire = false;
     private bool currentPressG = false;
     //Carry
     public CarryElements Carry;
@@ -196,6 +197,16 @@ public class PlayerController : MonoBehaviour {
             currentPressG = false;
         }
 
+		bool pressFire = Input.GetButton("Fire");
+        if (pressFire & !currentPressFire)
+        {
+            // Interact();
+            currentPressFire = true;
+        }
+        else if (!pressFire & currentPressFire)
+        {
+            currentPressFire = false;
+        }
     }
 
     void Sit()
