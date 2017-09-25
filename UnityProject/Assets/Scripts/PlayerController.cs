@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// gui elements
 	public TutorialGui gui;
+	public GameObject fire;
 	private ProgressManager progressMng;
 	private GUIText interactionTooltip;
 	
@@ -49,10 +50,6 @@ public class PlayerController : MonoBehaviour {
 	private bool stopPlayerNow=false;
 	private float lastH = 0.0f;
 	private float lastV = 0.0f;
-	// Meshes
-	//private GameObject sittingPlayerMesh;
-	//private GameObject standingPlayerMesh;
-	//private GameObject deadPlayerMesh;
 	public SphereCollider collisionHelper;
 	private List<SphereCollider> collidingObj;
 	//Sounds
@@ -200,7 +197,7 @@ public class PlayerController : MonoBehaviour {
 		bool pressFire = Input.GetButton("Fire");
         if (pressFire & !currentPressFire)
         {
-            // Interact();
+            MakeFire();
             currentPressFire = true;
         }
         else if (!pressFire & currentPressFire)
@@ -272,6 +269,15 @@ public class PlayerController : MonoBehaviour {
 			elapsedTime = duration;
         }
     }
+
+	private void MakeFire() {
+		Debug.Log("fire!");
+		Vector3 position = transform.position;
+		position = position+(transform.right*1.1f);
+		position.y = groundTile.GetComponent<GroundGen>().returnPlayerPos(position.x, position.z) - 0.2f;
+		Instantiate(fire, position, Quaternion.identity);
+
+	}
 
 	private void animationHandling()
 	{
