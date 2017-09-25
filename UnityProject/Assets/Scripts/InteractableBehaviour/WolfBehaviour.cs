@@ -97,7 +97,7 @@ public class WolfBehaviour : ReactableBehaviour
 					}
 				}
 
-				if (distanceToPlayer < 1.5f && !backingUp)
+				if (distanceToPlayer < 3f && !backingUp)
 				{
 					// Debug.Log("too close!");
 					

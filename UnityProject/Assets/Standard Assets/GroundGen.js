@@ -3,6 +3,7 @@
 import System.Collections.Generic;
 import UnityEngine;
 import System.Collections;
+import System.Linq;
 
 var depthGenR: GameObject;																	//PUBLIC VARIABLES
 var depthGenL: GameObject;
@@ -125,7 +126,15 @@ function Update() {																			//-----Update-----//
 		for(var k=0;k<renderedInstances.length;k++) {
 			var toKill = renderedInstances[k];
 			Destroy(toKill);
-		}			
+		}
+
+		var animals = GameObject.FindGameObjectsWithTag("Animal");
+
+		for (var animal: GameObject in animals) {
+			Destroy(animal);
+		}
+
+
 															
 		ChangeTerrain();
 		
