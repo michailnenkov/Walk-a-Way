@@ -22,10 +22,13 @@ public class WolfBehaviour : ReactableBehaviour
 
 	new private WolfBehaviours Behaviour;
 
+	private GameObject ground;
+
 	private Vector3 animalDirection;
 
 	// Use this for initialization
 	void Start (){
+		ground = GameObject.Find("GroundTile");
 	}
 	
 	// Update is called once per frame
@@ -36,6 +39,10 @@ public class WolfBehaviour : ReactableBehaviour
 		playerProgress = GameObject.Find("Progression").GetComponent<ProgressManager>().progress;
 
 		float distanceToPlayer = Vector3.Distance(GameObject.FindGameObjectWithTag("Player").transform.position, transform.position);
+
+		var y = ground.GetComponent<GroundGen>().returnGroundY(transform.position.x, transform.position.z);
+
+		transform.position = new Vector3(transform.position.x, y, transform.position.z);
 
 		// if (distanceToPlayer < 6) {
 		// 	PlayerInRange = true;
