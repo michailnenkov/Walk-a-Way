@@ -1,6 +1,8 @@
 ﻿//#pragma strict
 
 import System.Collections.Generic;
+import UnityEngine;
+import System.Collections;
 
 var depthGenR: GameObject;																	//PUBLIC VARIABLES
 var depthGenL: GameObject;
@@ -721,3 +723,4 @@ function TreeAreola(i, toRender, probChange) {															//----TreeAreola---
 		}
 	}
 }
+

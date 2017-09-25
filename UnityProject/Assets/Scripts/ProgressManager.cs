@@ -10,6 +10,7 @@ public class ProgressManager : MonoBehaviour {
 	public GameObject sun;
 	public GameObject light;
 	public GameObject ground;
+	public GameObject wolf;
 	public float timer = 0;
 	public float defaultTimerRate;
 	public float timerRate;
@@ -66,12 +67,12 @@ public class ProgressManager : MonoBehaviour {
 			timerRate = defaultTimerRate;
 		}
 
-		// //for testing only
-		// if (Input.GetKeyDown ("space")) {
+		//for testing only
+		if (Input.GetKeyDown ("space")) {
 
-		// 	Debug.Log(""); 
+			spawnWolf();
 
-		// }
+		}
     }
 
 
@@ -202,5 +203,38 @@ public class ProgressManager : MonoBehaviour {
 	public float linearInterpolationBetween( float zeroTill, float oneAt, float t)
 	{
 		return Mathf.Max(0.0f, Mathf.Min(1.0f,(t-zeroTill) / (oneAt-zeroTill)));
+	}
+
+	public void spawnWolf() {
+		float direction = Random.Range(0, 4);
+		float x;
+		float y;
+		float z;
+		GameObject thisWolf;
+		if(direction<1) {
+		//north
+		x = 18;
+		z = Random.Range(1, 18);
+	}
+	else if(direction<2) {
+		//south
+		x = 1;
+		z = Random.Range(1, 18);
+	}
+	else if(direction<3) {
+		//east
+		x = Random.Range(1, 18);
+		z = 1;
+	}
+	else {
+		//west
+		x = Random.Range(1, 18);
+		z = 18;
+	}
+		y = ground.GetComponent<GroundGen>().returnGroundY(x, z);
+		Vector3 wolfPosition = new Vector3(x, y, z);
+		thisWolf = Instantiate(wolf, wolfPosition, Quaternion.identity);
+		Vector3 playerPos = GameObject.FindGameObjectWithTag("Player").transform.position;
+		thisWolf.transform.LookAt(playerPos);
 	}
 }

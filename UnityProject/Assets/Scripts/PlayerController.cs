@@ -150,11 +150,11 @@ public class PlayerController : MonoBehaviour {
 		}
 
 				//for testing only
-		if (Input.GetKeyDown ("space")) {
+		// if (Input.GetKeyDown ("space")) {
 
-			Debug.Log(inRangeElements.First()); 
+		// 	Debug.Log(inRangeElements.First()); 
 
-		}
+		// }
 
 	}
 
@@ -638,7 +638,6 @@ public class PlayerController : MonoBehaviour {
 					interactionTooltip.text = "Press <b>E</b> "+closest.customInteractiveText();
 				}
 		} else if (branchInventory >= 3) {
-			// Debug.Log("here");
 			interactionTooltip.text = "Press <b>F</b> to make fire";
 		}			
 	}
