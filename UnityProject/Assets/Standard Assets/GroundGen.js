@@ -134,6 +134,13 @@ function Update() {																			//-----Update-----//
 			Destroy(animal);
 		}
 
+		for(var object : GameObject in GameObject.FindGameObjectsWithTag("Interactable"))
+		{
+			if(object.name == "Fire(Clone)")
+			{
+				Destroy(object);
+			}
+		}
 
 															
 		ChangeTerrain();
