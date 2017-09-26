@@ -9,6 +9,7 @@ public class ProgressManager : MonoBehaviour {
 	public PlayerController player;
 	public GameObject sun;
 	public GameObject light;
+	public bool StopTime = false;
 	public GameObject ground;
 	public GameObject wolf;
 	private bool wolfSpawned = false;
@@ -66,6 +67,10 @@ public class ProgressManager : MonoBehaviour {
 
 		} else {
 			timerRate = defaultTimerRate;
+		}
+
+		if (StopTime) {
+			timerRate = 0;
 		}
 
 		if (progress > 0.5 && !wolfSpawned) {
