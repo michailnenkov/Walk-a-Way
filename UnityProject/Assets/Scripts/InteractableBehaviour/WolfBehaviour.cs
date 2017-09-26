@@ -99,11 +99,12 @@ public class WolfBehaviour : ReactableBehaviour
 
 				break;
 			case WolfBehaviours.Kill:
-				if (distanceToPlayer > 1 && !waiting && !backingUp)
+				if (distanceToPlayer > 1.2 && !backingUp)
 				{
 					FacePlayer();
-					//move closer
-					CurrentSpeed = 5;
+					if (!waiting) {
+						StartCoroutine(WaitForStrike());
+					}
 					movingCloser = true;
 				}
 				else
@@ -133,7 +134,7 @@ public class WolfBehaviour : ReactableBehaviour
 	}
 
 	void OnTriggerEnter(Collider collider) {
-		if (collider.name == "ObstacleCollider") {
+		if (collider.name == "Player") {
 			Debug.Log("touching player");
 			touchingPlayer = true;
 			if (!backingUp) {
@@ -180,4 +181,15 @@ public class WolfBehaviour : ReactableBehaviour
 		backingUp = false;
 		yield return null;
 	}	
+
+	IEnumerator WaitForStrike() {
+		waiting = true;
+		CurrentSpeed = 0;
+		GameObject.Find("AudioWolf").GetComponent<AudioSource>().Play();
+		yield return new WaitForSeconds(1);
+		CurrentSpeed = 1;
+		yield return new WaitForSeconds(2);
+		CurrentSpeed = 5;
+		yield return null;
+	}
 }
