@@ -8,7 +8,7 @@ public class ProgressManager : MonoBehaviour {
 	public enum Values {Alpha, Speed, InertiaDuration, InertiaDistance, GreyPlayerColor, BackgroundColorFactor, CollisionSizePercent}
 	public PlayerController player;
 	public GameObject sun;
-	public GameObject light;
+	new public GameObject light;
 	public bool StopTime = false;
 	public GameObject ground;
 	public GameObject wolf;

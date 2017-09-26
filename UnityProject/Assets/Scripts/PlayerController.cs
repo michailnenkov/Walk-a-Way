@@ -496,6 +496,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		catch(System.MissingMethodException e)
 		{
+			Debug.Log(e);
 			newYPos = gameObject.transform.position.y;
 		}
 		float diff = newYPos-gameObject.transform.position.y;
