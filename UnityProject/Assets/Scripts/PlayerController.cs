@@ -332,9 +332,19 @@ public class PlayerController : MonoBehaviour {
 
 		//set player char opacity
 		//float grey = progressMng.getValue(ProgressManager.Values.GreyPlayerColor);
-		float grey = 0.6f;
-		playerMat.color = new Color(grey,grey,grey,  progressMng.getValue(ProgressManager.Values.Alpha)); // transparency
-
+		float grey = 0.5f;
+		float alpha = 0;
+		float emissive = 1;
+		if (progressMng.progress < 0.5f) {
+			alpha = Mathf.Lerp(0,2,progress);
+			emissive = Mathf.Lerp(0.7f,-0.7f,progress);
+			playerMat.SetColor("_EmissionColor", new Color(emissive,emissive,emissive));
+		} else {
+			alpha = 1;
+			playerMat.SetColor("_EmissionColor", new Color(0,0,0));
+		}
+		playerMat.color = new Color(grey,grey,grey, alpha); // transparency
+		// playerMat.SetColor("_EmissionColor", new Color(emissive,emissive,emissive));
 		// rigidbody.isKinematic = progress <= THRESH_FOR_NO_COLLISION; // starts colliding
 
 		speed =  progressMng.getValue(ProgressManager.Values.Speed); // reduced speed
