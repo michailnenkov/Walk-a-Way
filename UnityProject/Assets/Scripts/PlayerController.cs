@@ -694,7 +694,7 @@ public class PlayerController : MonoBehaviour {
                 movementMode = 0;
         }
     }
-	private void Die()
+	public void Die()
 	{
 		dead = true;
 		// change mesh to lying 

@@ -15,6 +15,8 @@ public class WolfBehaviour : ReactableBehaviour
 	bool waiting = false;
 	bool backingUp = false;
 
+	bool touchingPlayer = false;
+
 	public float stalkingSpeed = 2;
 	public float stalkingDistance = 10;
 
@@ -125,6 +127,24 @@ public class WolfBehaviour : ReactableBehaviour
 
 		transform.localPosition += (animalDirection * CurrentSpeed * Time.deltaTime);
 		transform.eulerAngles = new Vector3(0,transform.eulerAngles.y,transform.eulerAngles.z);
+	}
+
+	void OnTriggerEnter(Collider collider) {
+		if (collider.name == "ObstacleCollider") {
+			Debug.Log("touching player");
+			touchingPlayer = true;
+			if (!backingUp) {
+				Debug.Log("killing player");
+				GameObject.Find("Player").GetComponent<PlayerController>().Die();
+			}
+		}
+	}
+
+	void OnTriggerExit(Collider collider) {
+		if (collider.name == "ObstacleCollider") {
+			touchingPlayer = false;
+			Debug.Log("stopped touching player");
+		}
 	}
 
     private void FacePlayer()
