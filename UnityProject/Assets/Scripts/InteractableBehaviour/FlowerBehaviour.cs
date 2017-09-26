@@ -37,6 +37,9 @@ namespace Assets.Scripts.InteractableBehaviour
                 //isActive = !isActive;
                 flowerPicked = true;
 
+                if (GameObject.Find("Progression").GetComponent<ProgressManager>().progress > 0.5) {
+                    GameObject.Find("Progression").GetComponent<ProgressManager>().progress += 0.01f;
+                }        
 
                 head.gameObject.SetActive(false);
 

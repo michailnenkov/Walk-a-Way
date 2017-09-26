@@ -32,6 +32,10 @@ public class BerryBehaviour : InteractableBehaviour {
 			//isActive = !isActive;
             berriesTaken = true;
 
+			if (GameObject.Find("Progression").GetComponent<ProgressManager>().progress > 0.5) {
+				GameObject.Find("Progression").GetComponent<ProgressManager>().progress += 0.01f;
+			}   
+
 		    RemoveBerries();
 
 			return CarryObject.Berry;

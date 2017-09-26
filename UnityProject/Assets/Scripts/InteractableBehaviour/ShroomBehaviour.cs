@@ -39,6 +39,10 @@ namespace Assets.Scripts.InteractableBehaviour
                 
                 head.gameObject.SetActive(false);
 
+                if (GameObject.Find("Progression").GetComponent<ProgressManager>().progress > 0.5) {
+                    GameObject.Find("Progression").GetComponent<ProgressManager>().progress += 0.01f;
+                }   
+
                 return CarryObject.Clear;
 
                 //rigidbody.isKinematic = !isActive;
