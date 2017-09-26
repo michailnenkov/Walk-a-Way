@@ -46,14 +46,6 @@ public class WolfBehaviour : ReactableBehaviour
 
 		transform.position = new Vector3(transform.position.x, y, transform.position.z);
 
-		// if (distanceToPlayer < 6) {
-		// 	PlayerInRange = true;
-		// } else {
-		// 	PlayerInRange = false;
-		// }
-
-
-
         if (playerProgress < 0.5f)
         {
             Behaviour = WolfBehaviours.Ignore;
@@ -67,12 +59,6 @@ public class WolfBehaviour : ReactableBehaviour
             Behaviour = WolfBehaviours.Kill;
         }
         
-		// if (false) {
-		//	//if too close to fire 
-		// 	Behaviour = WolfBehaviours.StayAway;
-		// }
-
-
 		switch (Behaviour)
 		{
 			case WolfBehaviours.Ignore:
@@ -113,7 +99,24 @@ public class WolfBehaviour : ReactableBehaviour
 
 				break;
 			case WolfBehaviours.Kill:
-				// Debug.Log("Move in range");
+				if (distanceToPlayer > 1 && !waiting && !backingUp)
+				{
+					FacePlayer();
+					//move closer
+					CurrentSpeed = 5;
+					movingCloser = true;
+				}
+				else
+				{
+					//if too close, or waiting, or backing up, stop
+					CurrentSpeed = 0;
+					FacePlayer();
+					if (movingCloser)
+					{ // if just finished coming closer, wait a little bit before following again
+						movingCloser = false;
+						StartCoroutine("WaitInPlace");
+					}
+				}
 
 				break;
 			case WolfBehaviours.StayAway:
