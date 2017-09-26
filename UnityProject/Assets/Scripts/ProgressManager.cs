@@ -58,13 +58,28 @@ public class ProgressManager : MonoBehaviour {
 		rateOfProgress = baseRateOfProgress * explorationMultiplier * timeOnTilePenalty * (totalSittingTime/240) + (totalTilesVisited/100000);
 		// Debug.Log("baseRateOfProgress: " + baseRateOfProgress + " * explorationMultiplier: " + explorationMultiplier + "* timeOnTilePenalty: " + timeOnTilePenalty);
 
-
+		//if player is sitting as ghost
 		if (player.isSitting && progress < 0.5f) {
-			progress += rateOfProgress;
 
-			timerRate = defaultTimerRate * rateOfProgress * 100000;
+			progress += rateOfProgress;
+			timerRate = defaultTimerRate * 10 * (rateOfProgress * 100000);
+
+			if (timerRate < 0) {
+				timerRate = 0;
+			}
+
+			if (timerRate > defaultTimerRate*20) {
+				Debug.Log("speed capped");
+				timerRate = defaultTimerRate*20;
+			}
+
+		//if player is sitting as human
 		} else if (player.isSitting && progress >= 0.5f) {
 
+			progress += rateOfProgress;
+			timerRate = defaultTimerRate * 10;
+
+		//if player is not sitting	
 		} else {
 			timerRate = defaultTimerRate;
 		}

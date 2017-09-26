@@ -235,8 +235,6 @@ function showNextTile(dir) {																//-----ShowNextTile-----//
 
 function GenerateGround() {																	//-----GenerateGround-----//
 
-	Debug.Log("GenerateGround ran");
-
 	gameObject.AddComponent(MeshFilter);
 	gameObject.AddComponent(MeshRenderer);
 	
