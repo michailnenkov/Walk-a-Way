@@ -33,10 +33,12 @@ public class WolfBehaviour : ReactableBehaviour
 	private GameObject ground;
 
 	private Vector3 animalDirection;
+	AudioSource wolfAudio;
 
 	// Use this for initialization
 	void Start (){
 		ground = GameObject.Find("GroundTile");
+		wolfAudio = GameObject.Find("AudioWolfGrowl").GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -76,18 +78,23 @@ public class WolfBehaviour : ReactableBehaviour
 				Behaviour = WolfBehaviours.StayAway;
 			}
 		}
-
-		Debug.Log(Behaviour);
 		
-        
 		switch (Behaviour)
 		{
 			case WolfBehaviours.Ignore:
 				doneWaiting = true;
+				if (wolfAudio.isPlaying) {
+					wolfAudio.Stop();
+				}
+				
 				// Debug.Log("Ignore in range");
 				break;
 			case WolfBehaviours.Stalk:
 				doneWaiting = true;
+				if (!wolfAudio.isPlaying) {
+					wolfAudio.Play();
+				}
+				//get closer, but not too close
 				if (distanceToPlayer > stalkingDistance && !waiting && !backingUp)
 				{
 					FacePlayer();
@@ -109,12 +116,13 @@ public class WolfBehaviour : ReactableBehaviour
 
 				if (distanceToPlayer < 3f && !backingUp)
 				{
-					// Debug.Log("too close!");
-					
 					StartCoroutine("BackUp");
 				}
 
 				if (backingUp) {
+					if (wolfAudio.isPlaying) {
+						wolfAudio.Stop();
+					}
 					FaceAway();
 					CurrentSpeed = Speed;
 				}
@@ -122,6 +130,9 @@ public class WolfBehaviour : ReactableBehaviour
 				break;
 			case WolfBehaviours.Kill:
 			
+				if (wolfAudio.isPlaying) {
+					wolfAudio.Stop();
+				}
 				if (distanceToPlayer > 1.2 && !backingUp)
 				{
 					FacePlayer();
@@ -149,6 +160,9 @@ public class WolfBehaviour : ReactableBehaviour
 			
 			case WolfBehaviours.StayAway:
 				CurrentSpeed = 0;
+				if (!wolfAudio.isPlaying) {
+					wolfAudio.Play();
+				}
 				transform.RotateAround(fire.transform.position, Vector3.up, 10 * Time.deltaTime);
 				transform.LookAt(fire.transform);
 				transform.Rotate(0,-90,0);
