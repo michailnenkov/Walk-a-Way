@@ -13,7 +13,13 @@ public class WolfBehaviour : ReactableBehaviour
 
 	bool movingCloser = false;
 	bool waiting = false;
+	bool doneWaiting = false;
+	bool howled = false;
 	bool backingUp = false;
+
+	bool closeToFire = false;
+
+	GameObject fire;
 
 	bool touchingPlayer = false;
 
@@ -58,14 +64,30 @@ public class WolfBehaviour : ReactableBehaviour
         {
             Behaviour = WolfBehaviours.Kill;
         }
+
+		if (fire != null) {
+			float wolf2fireDistance;
+			float player2fireDistance;
+
+			wolf2fireDistance = Vector3.Distance(fire.transform.position, transform.position);
+			player2fireDistance = Vector3.Distance(fire.transform.position, playerPos);
+
+			if (wolf2fireDistance < 5 && player2fireDistance < 5) {
+				Behaviour = WolfBehaviours.StayAway;
+			}
+		}
+
+		Debug.Log(Behaviour);
+		
         
 		switch (Behaviour)
 		{
 			case WolfBehaviours.Ignore:
+				doneWaiting = true;
 				// Debug.Log("Ignore in range");
 				break;
 			case WolfBehaviours.Stalk:
-
+				doneWaiting = true;
 				if (distanceToPlayer > stalkingDistance && !waiting && !backingUp)
 				{
 					FacePlayer();
@@ -99,11 +121,15 @@ public class WolfBehaviour : ReactableBehaviour
 
 				break;
 			case WolfBehaviours.Kill:
+			
 				if (distanceToPlayer > 1.2 && !backingUp)
 				{
 					FacePlayer();
-					if (!waiting) {
+					if (!howled) {
 						StartCoroutine(WaitForStrike());
+					}  
+					if (!waiting){
+						CurrentSpeed = 5;
 					}
 					movingCloser = true;
 				}
@@ -120,8 +146,13 @@ public class WolfBehaviour : ReactableBehaviour
 				}
 
 				break;
+			
 			case WolfBehaviours.StayAway:
-				
+				CurrentSpeed = 0;
+				transform.RotateAround(fire.transform.position, Vector3.up, 10 * Time.deltaTime);
+				transform.LookAt(fire.transform);
+				transform.Rotate(0,-90,0);
+
 			break;
 			default:
 				// Debug.Log("Default? in range");
@@ -142,12 +173,21 @@ public class WolfBehaviour : ReactableBehaviour
 				GameObject.Find("Player").GetComponent<PlayerController>().Die();
 			}
 		}
+
+		if (collider.name == "BurningCollider") {
+			fire = collider.gameObject;
+			closeToFire = true;
+		}
 	}
 
 	void OnTriggerExit(Collider collider) {
 		if (collider.name == "ObstacleCollider") {
 			touchingPlayer = false;
 			Debug.Log("stopped touching player");
+		}
+
+		if (collider.name == "BurningCollider") {
+			closeToFire = false;
 		}
 	}
 
@@ -172,6 +212,7 @@ public class WolfBehaviour : ReactableBehaviour
 		waiting = true;
 		yield return new WaitForSeconds(Random.Range(2.0f, 3.0f));
 		waiting = false;
+		doneWaiting = true;
 		yield return null;
 	}
 
@@ -183,13 +224,14 @@ public class WolfBehaviour : ReactableBehaviour
 	}	
 
 	IEnumerator WaitForStrike() {
+		howled = true;
 		waiting = true;
 		CurrentSpeed = 0;
 		GameObject.Find("AudioWolf").GetComponent<AudioSource>().Play();
 		yield return new WaitForSeconds(1);
 		CurrentSpeed = 1;
 		yield return new WaitForSeconds(2);
-		CurrentSpeed = 5;
+		waiting = false;
 		yield return null;
 	}
 }
