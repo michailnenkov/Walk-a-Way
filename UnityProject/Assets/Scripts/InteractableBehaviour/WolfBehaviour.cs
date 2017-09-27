@@ -21,7 +21,7 @@ public class WolfBehaviour : ReactableBehaviour
 
 	GameObject fire;
 
-	bool touchingPlayer = false;
+	// bool touchingPlayer = false;
 
 	public float stalkingSpeed = 2;
 	public float stalkingDistance = 10;
@@ -180,9 +180,9 @@ public class WolfBehaviour : ReactableBehaviour
 
 	void OnTriggerEnter(Collider collider) {
 		if (collider.name == "Player") {
-			Debug.Log("touching player");
-			touchingPlayer = true;
-			if (!backingUp) {
+			// Debug.Log("touching player");
+			// touchingPlayer = true;
+			if (!backingUp && playerProgress > 0.5f) {
 				Debug.Log("killing player");
 				GameObject.Find("Player").GetComponent<PlayerController>().Die();
 			}
@@ -196,8 +196,8 @@ public class WolfBehaviour : ReactableBehaviour
 
 	void OnTriggerExit(Collider collider) {
 		if (collider.name == "ObstacleCollider") {
-			touchingPlayer = false;
-			Debug.Log("stopped touching player");
+			// touchingPlayer = false;
+			// Debug.Log("stopped touching player");
 		}
 
 		if (collider.name == "BurningCollider") {

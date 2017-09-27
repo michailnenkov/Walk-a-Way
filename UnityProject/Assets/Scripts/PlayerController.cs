@@ -15,10 +15,10 @@ public class PlayerController : MonoBehaviour {
 	
 	//publics
 	public float speed;
+	public bool reincarnating = false;
 	//public ActiveTile actTile;
 	public Material playerMat;
-	// public GroundGen groundGen;
-	
+	// public GroundGen groundGen;	
 	// gui elements
 	public TutorialGui gui;
 	public GameObject fire;
@@ -32,8 +32,7 @@ public class PlayerController : MonoBehaviour {
 	protected Animator animator;
 	// interactive stuff
 	private float progress=0.0f;
-	////private bool sit = false;
-    ////private bool interact = false;
+
 	private bool dead = false;
     private List<ActableBehaviour> inRangeElements;
     private const float THRESH_FOR_NO_COLLISION = 0.1f;
@@ -84,7 +83,6 @@ public class PlayerController : MonoBehaviour {
 		interactionTooltip = GameObject.Find("ContextSensitiveInteractionText").GetComponent<GUIText>();
 		interactionTooltip.text = "";
 	    //Carry = gameObject.GetComponentInChildren<CarryElements>();
-
 		
 		// find sounds
 		sittingSound = GameObject.Find("AudioSit").GetComponent<AudioSource>();
@@ -102,20 +100,22 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
-		if (dead) {
-			return;
+
+
+		if (reincarnating) {
+			isSitting = false;
+			Debug.Log("Happening");
+			progressMng.progress = 0;
+			animator.SetBool("dead", false );
+			animator.SetBool("sitting", false);
+			reincarnating = false;		
 		}
+
 		// Cache the inputs.
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 		if( h != lastH || v != lastV)
 			stopPlayerNow = false;
-		//Debug.Log (h.ToString()+ " "+ v.ToString()) ;
-		// changed the Axis gravity&sensitivity to 1000, for more direct input.
-		// for joystick usage however Vince told me to:
-		/* just duplicate Horizontal and use gravity 1, dead 0.2 and sensitivity 1 that it works*/		
-        ////sit = Input.GetButtonDown("Sit");
-		////interact = Input.GetButtonDown("Interact");
 		
 		checkProgress();
 
@@ -137,9 +137,7 @@ public class PlayerController : MonoBehaviour {
 			currSittingTime += Time.deltaTime; // count seconds spend sitting;
 		}
 		FadeSounds(Time.deltaTime);
-		// if (progress > 0.5f) {		
-			DisplayInteractionTooltip();		
-		// }
+		DisplayInteractionTooltip();		
 		animationHandling();
 	    Carry.UpdateCarry(progress);
 		lastH = h;
@@ -149,7 +147,7 @@ public class PlayerController : MonoBehaviour {
 
 		}
 
-				//for testing only
+		//for testing only
 		// if (Input.GetKeyDown ("space")) {
 
 		// 	Debug.Log(inRangeElements.First()); 
@@ -287,7 +285,7 @@ public class PlayerController : MonoBehaviour {
 	private void animationHandling()
 	{
 		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-		AnimatorStateInfo nextStateInfo = animator.GetNextAnimatorStateInfo(0);
+
 		if(stateInfo.fullPathHash == Animator.StringToHash("Base.Picking"))
 		{
 			animator.SetBool("picking", false );
@@ -355,16 +353,7 @@ public class PlayerController : MonoBehaviour {
 		{			
 			SetLayerRecursively(gameObject,(int)(LayerList.withPebbleCollision));
 		}
-		
-		//start fading the background to black				
-		// float lower = progressMng.getValue(ProgressManager.Values.BackgroundColorFactor);
-		// isoCam.backgroundColor = new Color ( background.r*lower , background.g*lower, background.b*lower, 1.0f);
-	
-		// he dies at progress 1.0f
-		// if (progress > 1.0f && !dead)
-		// {
-		// 	Die();
-		// }
+
     }
 
     private void Movement(float v, float h)
@@ -639,7 +628,6 @@ public class PlayerController : MonoBehaviour {
 		
 		interactionTooltip.text = "";
 		InteractableBehaviour closest = FindClosestInteractable();
-//		Debug.Log(closest.name);
 		if( closest != null) 
         {
 			if (closest.customInteractiveText() != null)
@@ -713,9 +701,11 @@ public class PlayerController : MonoBehaviour {
 		// start Death sounds
 		PlayDeathSound();
 		// clean the interaction Tooltip text
-		interactionTooltip.text = "You died.";	
+		// interactionTooltip.text = "You died.";	
 		// show the credits
-		gui.showCredits();
+		// gui.showCredits();
+		gui.FadeOutDeath();
+		
 	}
 	private void FadeSounds(float timeDelta)
 	{

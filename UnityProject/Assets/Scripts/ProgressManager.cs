@@ -105,7 +105,7 @@ public class ProgressManager : MonoBehaviour {
 	IEnumerator startSpawningWolf() {
 		wolfSpawned = true;
 		Debug.Log("wolf started spawning");
-		yield return new WaitForSeconds(Random.Range(10, 60));
+		yield return new WaitForSeconds(Random.Range(5, 10));
 		if (timer < 0.12f || timer > 0.9f) {
 			Debug.Log("wolf spawned!");
 			spawnWolf();

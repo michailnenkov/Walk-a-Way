@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public enum Tutorials {none,move,sit,standup,interact,follow,firstTile,secondTile,endTutorial};
 
@@ -37,6 +38,8 @@ public class TutorialGui : MonoBehaviour {
 	private float currentTime=0.0f;
 	private float fadeOutEndTutorial=5.0f;
 	private bool shouldShowCredits = false;
+
+	private float fadeAlpha = 0;
 
 	private Tutorials nextTut = Tutorials.none;
 	private Tutorials currTut = Tutorials.move;
@@ -137,7 +140,7 @@ public class TutorialGui : MonoBehaviour {
 		textOverlay.color = newTextColor;
 
 	}
-	private void fadeInOverlay()
+	public void fadeInOverlay()
 	{
 		if( nextTut == Tutorials.none)
 			return;
@@ -268,6 +271,12 @@ public class TutorialGui : MonoBehaviour {
 		credits.GetComponent<GUITexture>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
 		StartCoroutine(DelayFadeIn(credits.GetComponent<GUITexture>(),1.0f));
 	}
+
+	public void FadeOutDeath(){
+		 Image fadeOut = GameObject.Find("Fade").GetComponent<Image>();
+		//  fadeOut.color = new Color(0,0,0,1);
+		 StartCoroutine(FadeOut(fadeOut));
+	}
 	
 	IEnumerator DelayFadeIn(GUITexture fadein, float delay)
 	{		
@@ -276,4 +285,25 @@ public class TutorialGui : MonoBehaviour {
 			StartCoroutine(Fade.use.Alpha(fadein, 0.0f, 1.0f, 3.0f));		
     }
 	
+	IEnumerator FadeOut(Image fadeOut) {
+		
+		while(fadeAlpha<1) {
+			fadeAlpha += Time.deltaTime;
+			fadeOut.color = new Color(0,0,0,fadeAlpha);
+			yield return null;
+		}
+		yield return new WaitForSeconds(0.5f);
+
+		while(fadeAlpha>0) {
+			fadeAlpha -= Time.deltaTime;
+			fadeOut.color = new Color(0,0,0,fadeAlpha);
+			yield return null;
+		}
+		if (!GameObject.Find("Player").GetComponent<PlayerController>().reincarnating) {
+			GameObject.Find("Player").GetComponent<PlayerController>().reincarnating = true;
+		Debug.Log("Reincarnate now!");
+		}
+		
+		yield return null;
+	}
 }
