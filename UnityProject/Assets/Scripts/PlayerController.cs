@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour {
 	public bool reincarnating = false;
 	//public ActiveTile actTile;
 	public Material playerMat;
+	public Material simsMat;
 	// public GroundGen groundGen;	
 	// gui elements
 	public TutorialGui gui;
@@ -332,17 +333,27 @@ public class PlayerController : MonoBehaviour {
 		//float grey = progressMng.getValue(ProgressManager.Values.GreyPlayerColor);
 		float grey = 0.5f;
 		float alpha = 0;
+		float alphaSims = 0;
 		float emissive = 1;
+		float simsEmissive = 1;
 		if (progressMng.progress < 0.5f) {
 			alpha = Mathf.Lerp(0,2,progress);
+			alphaSims = Mathf.Lerp(1,-1,progress);
+
 			emissive = Mathf.Lerp(0.7f,-0.7f,progress);
+			simsEmissive = Mathf.Lerp(1,-1,progress);
+
 			playerMat.SetColor("_EmissionColor", new Color(emissive,emissive,emissive));
+			simsMat.SetColor("_EmissionColor", new Color(simsEmissive,simsEmissive,simsEmissive));
 		} else {
 			alpha = 1;
+			alphaSims = 0;
 			playerMat.SetColor("_EmissionColor", new Color(0,0,0));
+			simsMat.SetColor("_EmissionColor", new Color(0,0,0));
 		}
 		playerMat.color = new Color(grey,grey,grey, alpha); // transparency
-		// playerMat.SetColor("_EmissionColor", new Color(emissive,emissive,emissive));
+		simsMat.color = new Color(grey,grey,grey, alphaSims); // transparency
+
 		// rigidbody.isKinematic = progress <= THRESH_FOR_NO_COLLISION; // starts colliding
 
 		speed =  progressMng.getValue(ProgressManager.Values.Speed); // reduced speed
