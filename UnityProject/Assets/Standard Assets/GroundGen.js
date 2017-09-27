@@ -131,6 +131,7 @@ function Update() {																			//-----Update-----//
 		var animals = GameObject.FindGameObjectsWithTag("Animal");
 
 		for (var animal: GameObject in animals) {
+			GameObject.Find("AudioWolfGrowl").GetComponent(AudioSource).Stop();
 			Destroy(animal);
 		}
 
