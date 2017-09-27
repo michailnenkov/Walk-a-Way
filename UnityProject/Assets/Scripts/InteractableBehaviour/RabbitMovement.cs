@@ -30,6 +30,7 @@ public class RabbitMovement : MonoBehaviour
             gameObject.SetActive(false);
             //TODO: call groundgen and inform that a rabbit have moved out
             // Destroy(this);
+            GameObject.Find("AudioWolfGrowl").GetComponent<AudioSource>().Stop();
         }
     }
 

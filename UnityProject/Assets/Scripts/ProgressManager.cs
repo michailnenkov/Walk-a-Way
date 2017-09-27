@@ -69,7 +69,7 @@ public class ProgressManager : MonoBehaviour {
 			}
 
 			if (timerRate > defaultTimerRate*20) {
-				Debug.Log("speed capped");
+				// Debug.Log("speed capped");
 				timerRate = defaultTimerRate*20;
 			}
 
