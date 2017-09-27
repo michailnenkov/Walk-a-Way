@@ -96,8 +96,8 @@ public class ProgressManager : MonoBehaviour {
 
 		//for testing only
 		if (Input.GetKeyDown ("space")) {
-			spawnWolf();
-			wolfSpawned = true;
+			// spawnWolf();
+			// wolfSpawned = true;
 		}
     }
 

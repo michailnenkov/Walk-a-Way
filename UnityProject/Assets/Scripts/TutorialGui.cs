@@ -2,17 +2,18 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public enum Tutorials {none,move,sit,standup,interact,follow,firstTile,secondTile,endTutorial};
+public enum Tutorials {none,move,sit,standup,interact,follow,firstTile,secondTile,endTutorial,getWood};
 
 public class TutorialGui : MonoBehaviour {
 	private string[] TutorialDescriptions = {"","Press <b>W,A,S,D</b> to move.",
 		"Press <b>Q</b> to sit.",
-		"Press <b>Q</b> to stand up again.",
-		"Press <b>E</b> to interact.",
-		"Follow the <b>rabbits</b>.",
+		"Resting and exploring helps you become closer with nature. Press <b>Q</b> to stand up again.",
+		"Press <b>E</b> to pick up a flower.",
+		"Follow the <b>rabbit</b>.",
 		"The world is <b>big</b> – go explore.",
-		"Discover the world <b>and</b> yourself.",
-		"Walk a way."};
+		"As you explore, you start to have influence on the world.",
+		"Walk a way.",
+		"Collect 2 more branches"};
 	// gui bools
 	private bool tutMoveDone=false;
 	private bool tutSitDone=false;
@@ -22,6 +23,7 @@ public class TutorialGui : MonoBehaviour {
 	private bool tutFirstTileDone=false;//
 	private bool tutSecondFirstTileDone=false;//
 	private bool tutDone=false;//
+	private bool tutWoodDone=false;
 
 	public bool firstTileDone(){return tutFirstTileDone;}
 
@@ -63,8 +65,12 @@ public class TutorialGui : MonoBehaviour {
 		darkOverlay.pixelInset = newPixelInset;
 
 	}
+
 	void Update()
 	{
+
+
+
 		if( fade )
 		{
 			currentTime += Time.deltaTime;
@@ -84,6 +90,7 @@ public class TutorialGui : MonoBehaviour {
 			{
 				//Prepare for the next tutorial
 				chooseNextTutorial();
+				Debug.Log(TutorialDescriptions[(int)nextTut]);
 				resetTextOverlay( TutorialDescriptions[(int)nextTut] );
 				fade = true;
 				currentTime = 0.0f;
@@ -97,7 +104,12 @@ public class TutorialGui : MonoBehaviour {
 				fadeOutWalkaway();
 			}
 		}
+
+		if (Input.GetKeyDown ("space")) {
+			nextTut = Tutorials.getWood;
+		}
 	}
+
 	public void Restart()
 	{
 		tutMoveDone=false;
@@ -174,16 +186,74 @@ public class TutorialGui : MonoBehaviour {
 		Color newTextColor = new Color(1.0f,1.0f,1.0f,percent);
 		textOverlay.color = newTextColor;
 	}
-	public void doneMove()		{ tutMoveDone=true; 	 if(currTut==Tutorials.move){ fade = true;nextTut=Tutorials.firstTile;}}
-	public void doneFirstTile()	{ if(currTut==Tutorials.firstTile) { tutFirstTileDone = true; fade = true;nextTut=Tutorials.interact;}}	
-	public void doneInteract()	{ tutInteractDone = true; if(currTut==Tutorials.interact) { fade = true;nextTut=Tutorials.secondTile;}}
-	public void doneSecondTile(){ if(currTut==Tutorials.secondTile) { tutSecondFirstTileDone = true; fade = true;nextTut=Tutorials.sit;}}
-	public void doneSit()		{ tutSitDone = true; 	 if(currTut==Tutorials.sit) { fade = true;nextTut=Tutorials.standup;}}
-	public void doneStandingUp(){ tutStandUpDone = true; if(currTut==Tutorials.standup) { fade = true;nextTut=Tutorials.endTutorial;}}
-	public void doneTutorial(){ tutDone = true; if(currTut==Tutorials.endTutorial) { fade = true;nextTut=Tutorials.none;}}
-	public void doneFollow()	{ tutFollowDone = true;
-									GameObject.Find("GUI").transform.Find("Arrow").gameObject.SetActive(false); 
-								  if(currTut==Tutorials.follow){ fade = true;nextTut=Tutorials.sit;}}
+	public void doneMove(){ 
+		tutMoveDone=true; 	 
+		if(currTut==Tutorials.move){ 
+			fade = true;
+			nextTut=Tutorials.firstTile;
+		}
+	}
+	public void doneFirstTile() { 
+		if (currTut == Tutorials.firstTile) { 
+			tutFirstTileDone = true; 
+			fade = true;
+			 nextTut = Tutorials.interact; 
+		} 
+	}
+    public void doneInteract()	{ 
+		tutInteractDone = true; 
+		if(currTut==Tutorials.interact) { 
+			fade = true;
+			nextTut=Tutorials.secondTile;
+		}
+	}
+	public void doneSecondTile(){ 
+		if(currTut==Tutorials.secondTile) { 
+			tutSecondFirstTileDone = true; 
+			fade = true;nextTut=Tutorials.sit;
+		}
+	}
+	public void doneSit(){ 
+		tutSitDone = true; 	 
+		if(currTut==Tutorials.sit) { 
+			fade = true;
+			nextTut=Tutorials.standup;
+		}
+	}
+	public void doneStandingUp(){ 
+		tutStandUpDone = true; 
+		if(currTut==Tutorials.standup) { 
+			fade = true;
+			nextTut=Tutorials.endTutorial;
+		}
+	}
+	public void doneTutorial(){ 
+		tutDone = true; 
+		if(currTut==Tutorials.endTutorial) {
+			 fade = true;
+			 nextTut=Tutorials.none;
+		}
+	}
+	public void doneFollow() { 
+		tutFollowDone = true;
+		GameObject.Find("GUI").transform.Find("Arrow").gameObject.SetActive(false); 
+		if(currTut==Tutorials.follow){ 
+			fade = true;
+			nextTut=Tutorials.sit;
+		}
+	}
+
+	public void gettingWood() {
+		nextTut=Tutorials.getWood;
+	}
+
+	public void doneWood() { 
+		tutWoodDone = true;
+		if(currTut==Tutorials.getWood){ 
+			fade = true;
+			nextTut=Tutorials.none;
+		}
+	}
 
 
 	private void chooseNextTutorial()

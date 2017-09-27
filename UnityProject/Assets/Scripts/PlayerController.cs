@@ -255,6 +255,7 @@ public class PlayerController : MonoBehaviour {
 			if (co == CarryObject.Branch) {
 				ClearInventory();
 				animator.SetBool("picking", true);
+				gui.doneWood();
 				Carry.PickBranch(progress);
 			}
 
